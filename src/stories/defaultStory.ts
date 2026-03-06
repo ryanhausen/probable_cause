@@ -1,0 +1,112 @@
+import type { Story } from '../engine/types';
+import museumLobbyImage from '../assets/stories/defaultStory/museum-lobby.svg';
+
+export const defaultStory: Story = {
+    id: 'story-1',
+    title: 'The Missing Artifact',
+    description: 'A priceless museum artifact has gone missing. The police are stumped.',
+    startingSceneId: 'museum-lobby',
+    scenes: {
+        'museum-lobby': {
+            id: 'museum-lobby',
+            name: 'Museum Lobby',
+            description: 'The expansive lobby of the city museum. Marble floors echo with every step. The display case where the artifact once sat is empty, surrounded by yellow tape.',
+            imageUrl: museumLobbyImage,
+            connectedScenes: ['museum-office'],
+            charactersPresent: ['char-curator'],
+            interactables: [
+                {
+                    id: 'int-glass',
+                    name: 'Broken Glass',
+                    description: 'Shattered glass from the display case. It was broken from the outside in.',
+                    x: 50, y: 50,
+                    grantsClueId: 'clue-glass'
+                }
+            ]
+        },
+        'museum-office': {
+            id: 'museum-office',
+            name: 'Curator\'s Office',
+            description: 'A cramped, messy office. Papers are strewn everywhere.',
+            connectedScenes: ['museum-lobby'],
+            charactersPresent: [],
+            interactables: [
+                {
+                    id: 'int-ledger',
+                    name: 'Financial Ledger',
+                    description: 'A book detailing the museum\'s finances. They are deep in debt.',
+                    x: 20, y: 80,
+                    grantsClueId: 'clue-debt'
+                }
+            ]
+        }
+    },
+    characters: {
+        'char-curator': {
+            id: 'char-curator',
+            name: 'Curator Higgins',
+            description: 'The nervous curator of the museum.',
+            currentDialogueNodeId: 'node-1',
+            dialogueNodes: {
+                'node-1': {
+                    id: 'node-1',
+                    text: 'Oh, it\'s terrible! The Golden Falcon is gone! Who could have done this?',
+                    options: [
+                        { text: 'Were there any signs of a break-in?', nextNodeId: 'node-2' },
+                        { text: 'I need to look around.', nextNodeId: undefined }
+                    ]
+                },
+                'node-2': {
+                    id: 'node-2',
+                    text: 'No alarms were tripped. The security guard was on patrol but saw nothing.',
+                    options: [
+                        { text: 'Interesting. I will keep looking.', nextNodeId: undefined, grantsClueId: 'clue-inside-job' }
+                    ]
+                }
+            }
+        }
+    },
+    clues: {
+        'clue-glass': {
+            id: 'clue-glass',
+            name: 'Shattered Glass',
+            description: 'The display was broken. Very standard.',
+            plausibilityModifiers: [
+                { theoryId: 'theory-robbery', amount: 10 }
+            ]
+        },
+        'clue-debt': {
+            id: 'clue-debt',
+            name: 'Museum Debt',
+            description: 'The museum was bankrupt. The insurance payout for the artifact would save it.',
+            plausibilityModifiers: [
+                { theoryId: 'theory-insurance', amount: 40 }
+            ]
+        },
+        'clue-inside-job': {
+            id: 'clue-inside-job',
+            name: 'No Alarms',
+            description: 'The alarms were bypassed by someone who knew the system.',
+            plausibilityModifiers: [
+                { theoryId: 'theory-insurance', amount: 30 },
+                { theoryId: 'theory-robbery', amount: 20 }
+            ]
+        }
+    },
+    theories: {
+        'theory-robbery': {
+            id: 'theory-robbery',
+            name: 'Standard Robbery',
+            description: 'A professional thief broke in and stole the artifact.',
+            suspectName: 'Unknown Thief',
+            basePlausibility: 10
+        },
+        'theory-insurance': {
+            id: 'theory-insurance',
+            name: 'Insurance Fraud',
+            description: 'The curator staged the robbery to collect insurance money.',
+            suspectName: 'Curator Higgins',
+            basePlausibility: 5
+        }
+    }
+};
