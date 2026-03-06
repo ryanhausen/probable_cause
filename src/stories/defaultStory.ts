@@ -1,5 +1,6 @@
 import type { Story } from '../engine/types';
 import museumLobbyImage from '../assets/stories/defaultStory/museum-lobby.svg';
+import museumOfficeImage from '../assets/stories/defaultStory/museum-office.svg';
 
 export const defaultStory: Story = {
     id: 'story-1',
@@ -28,6 +29,7 @@ export const defaultStory: Story = {
             id: 'museum-office',
             name: 'Curator\'s Office',
             description: 'A cramped, messy office. Papers are strewn everywhere.',
+            imageUrl: museumOfficeImage,
             connectedScenes: ['museum-lobby'],
             charactersPresent: [],
             interactables: [

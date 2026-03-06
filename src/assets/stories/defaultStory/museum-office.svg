@@ -1,0 +1,181 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+    <defs>
+        <!-- Gradients -->
+        <radialGradient id="bgLight" cx="50%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="#4a3b32" />
+            <stop offset="100%" stop-color="#1a1512" />
+        </radialGradient>
+
+        <linearGradient id="woodPaneling" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#3d2a1d" />
+            <stop offset="50%" stop-color="#2a1d14" />
+            <stop offset="100%" stop-color="#170f0a" />
+        </linearGradient>
+
+        <linearGradient id="deskWood" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#5c3a21" />
+            <stop offset="50%" stop-color="#3d2616" />
+            <stop offset="100%" stop-color="#1f130b" />
+        </linearGradient>
+
+        <linearGradient id="paperGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fdfadb" />
+            <stop offset="100%" stop-color="#d4cea3" />
+        </linearGradient>
+
+        <!-- Drop shadow for papers and objects -->
+        <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+            <feDropShadow dx="2" dy="5" stdDeviation="3" flood-color="#000" flood-opacity="0.8"/>
+        </filter>
+
+        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="15" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+    </defs>
+
+    <!-- Wall Background -->
+    <rect width="100%" height="800" fill="url(#bgLight)" />
+
+    <!-- Wood Paneling (Smithsonian style) -->
+    <rect x="0" y="0" width="150" height="800" fill="url(#woodPaneling)" stroke="#1a1512" stroke-width="4" />
+    <rect x="500" y="0" width="100" height="800" fill="url(#woodPaneling)" stroke="#1a1512" stroke-width="4" />
+    <rect x="1100" y="0" width="100" height="800" fill="url(#woodPaneling)" stroke="#1a1512" stroke-width="4" />
+    <rect x="1770" y="0" width="150" height="800" fill="url(#woodPaneling)" stroke="#1a1512" stroke-width="4" />
+
+    <!-- Bookshelves -->
+    <!-- Shelf 1 (Left) -->
+    <rect x="150" y="100" width="350" height="700" fill="#140d09" />
+    <line x1="150" y1="250" x2="500" y2="250" stroke="#3d2a1d" stroke-width="15" />
+    <line x1="150" y1="400" x2="500" y2="400" stroke="#3d2a1d" stroke-width="15" />
+    <line x1="150" y1="550" x2="500" y2="550" stroke="#3d2a1d" stroke-width="15" />
+    <line x1="150" y1="700" x2="500" y2="700" stroke="#3d2a1d" stroke-width="15" />
+
+    <rect x="170" y="150" width="30" height="90" fill="#4a2511" />
+    <rect x="210" y="130" width="40" height="110" fill="#2c3e50" />
+    <rect x="260" y="160" width="25" height="80" fill="#78281f" />
+    <rect x="290" y="140" width="35" height="100" fill="#1e8449" />
+    <rect x="330" y="140" width="45" height="100" fill="#b03a2e" />
+
+    <rect x="180" y="300" width="35" height="90" fill="#17202a" />
+    <rect x="220" y="280" width="50" height="110" fill="#641e16" />
+    <polygon points="300,390 330,390 360,280 330,280" fill="#145a32" />
+
+    <rect x="160" y="450" width="20" height="90" fill="#7b241c" />
+    <rect x="190" y="430" width="60" height="110" fill="#1a5276" />
+    <rect x="260" y="440" width="40" height="100" fill="#9a7d0a" />
+    <rect x="310" y="460" width="30" height="80" fill="#4a2311" />
+    <polygon points="400,540 440,540 460,450 420,450" fill="#512e5f" />
+
+    <!-- Shelf 2 (Right) -->
+    <rect x="1200" y="100" width="570" height="700" fill="#140d09" />
+    <line x1="1200" y1="250" x2="1770" y2="250" stroke="#3d2a1d" stroke-width="15" />
+    <line x1="1200" y1="400" x2="1770" y2="400" stroke="#3d2a1d" stroke-width="15" />
+    <line x1="1200" y1="550" x2="1770" y2="550" stroke="#3d2a1d" stroke-width="15" />
+    <line x1="1200" y1="700" x2="1770" y2="700" stroke="#3d2a1d" stroke-width="15" />
+
+    <rect x="1230" y="120" width="40" height="120" fill="#1f618d" />
+    <rect x="1280" y="150" width="30" height="90" fill="#7e5109" />
+    <rect x="1320" y="110" width="50" height="130" fill="#4a2311" />
+    <rect x="1380" y="140" width="35" height="100" fill="#17202a" />
+    <rect x="1420" y="160" width="25" height="80" fill="#78281f" />
+    <rect x="1550" y="130" width="60" height="110" fill="#145a32" />
+    <polygon points="1630,240 1660,240 1700,120 1670,120" fill="#641e16" />
+
+    <!-- Center framed artwork / display board -->
+    <rect x="650" y="150" width="400" height="300" fill="#2c3e50" stroke="#bdc3c7" stroke-width="10" filter="url(#shadow)" />
+    <!-- Notes pinned to board -->
+    <rect x="680" y="180" width="60" height="80" fill="url(#paperGrad)" />
+    <rect x="760" y="200" width="70" height="50" fill="#f9e79f" transform="rotate(-5 760 200)" />
+    <rect x="880" y="170" width="80" height="100" fill="url(#paperGrad)" transform="rotate(10 880 170)" />
+    <rect x="720" y="320" width="90" height="60" fill="url(#paperGrad)" />
+    <rect x="900" y="280" width="60" height="80" fill="#f1948a" transform="rotate(-15 900 280)" />
+    <circle cx="690" cy="190" r="3" fill="#e74c3c" />
+    <circle cx="770" cy="210" r="3" fill="#e74c3c" />
+    <circle cx="890" cy="180" r="3" fill="#e74c3c" />
+    <circle cx="730" cy="330" r="3" fill="#e74c3c" />
+    <circle cx="910" cy="290" r="3" fill="#e74c3c" />
+    <path d="M 690,190 Q 730,150 770,210" fill="none" stroke="#e74c3c" stroke-width="2" />
+    <path d="M 770,210 L 890,180" fill="none" stroke="#e74c3c" stroke-width="2" />
+    <path d="M 770,210 L 730,330" fill="none" stroke="#e74c3c" stroke-width="2" />
+    <path d="M 890,180 Q 950,250 910,290" fill="none" stroke="#e74c3c" stroke-width="2" />
+
+    <!-- Floor -->
+    <!-- Perspective floor from y=800 to 1080 -->
+    <polygon points="0,1080 1920,1080 1600,800 320,800" fill="#2c211a" stroke="#1c1410" stroke-width="4" />
+    <polygon points="0,800 320,800 0,1080" fill="#140f0c" />
+    <polygon points="1920,800 1600,800 1920,1080" fill="#140f0c" />
+
+    <line x1="200" y1="1080" x2="480" y2="800" stroke="#1c1410" stroke-width="3" />
+    <line x1="400" y1="1080" x2="640" y2="800" stroke="#1c1410" stroke-width="3" />
+    <line x1="600" y1="1080" x2="800" y2="800" stroke="#1c1410" stroke-width="3" />
+    <line x1="800" y1="1080" x2="960" y2="800" stroke="#1c1410" stroke-width="3" />
+    <line x1="1000" y1="1080" x2="1120" y2="800" stroke="#1c1410" stroke-width="3" />
+    <line x1="1200" y1="1080" x2="1280" y2="800" stroke="#1c1410" stroke-width="3" />
+    <line x1="1400" y1="1080" x2="1440" y2="800" stroke="#1c1410" stroke-width="3" />
+    <line x1="1600" y1="1080" x2="1600" y2="800" stroke="#1c1410" stroke-width="3" />
+
+    <ellipse cx="960" cy="950" rx="400" ry="100" fill="#58181f" stroke="#3d1115" stroke-width="5" opacity="0.8" />
+    <ellipse cx="960" cy="950" rx="380" ry="90" fill="none" stroke="#d4ac0d" stroke-width="3" opacity="0.6" />
+
+    <!-- Massive Cramped Desk (Center/Right-ish) -->
+    <rect x="500" y="650" width="900" height="60" fill="url(#deskWood)" filter="url(#shadow)" />
+    <rect x="520" y="710" width="860" height="250" fill="#3d2616" />
+    <rect x="550" y="740" width="350" height="190" fill="#2c1a0e" stroke="#1f130b" stroke-width="4" />
+    <rect x="960" y="740" width="350" height="190" fill="#2c1a0e" stroke="#1f130b" stroke-width="4" />
+
+    <!-- Desk Lamp with Green Shade (Smithsonian/Library style) -->
+    <rect x="600" y="580" width="20" height="100" fill="#d4ac0d" />
+    <ellipse cx="610" cy="680" rx="40" ry="10" fill="#b9770e" />
+    <path d="M 540,600 Q 610,500 680,600 Z" fill="#1e8449" />
+    <ellipse cx="610" cy="600" rx="70" ry="15" fill="#f1c40f" opacity="0.8" filter="url(#glow)" />
+    <polygon points="540,600 680,600 900,1000 300,1000" fill="#f1c40f" opacity="0.1" filter="url(#glow)" pointer-events="none" />
+
+    <!-- Chaos: Papers everywhere -->
+    <!-- On the desk -->
+    <rect x="700" y="620" width="60" height="80" fill="url(#paperGrad)" transform="rotate(15 700 620)" filter="url(#shadow)" />
+    <rect x="740" y="610" width="60" height="80" fill="url(#paperGrad)" transform="rotate(-5 740 610)" filter="url(#shadow)" />
+    <rect x="720" y="630" width="60" height="80" fill="url(#paperGrad)" transform="rotate(45 720 630)" filter="url(#shadow)" />
+    <rect x="800" y="620" width="90" height="60" fill="url(#paperGrad)" transform="rotate(-25 800 620)" filter="url(#shadow)" />
+    <rect x="850" y="605" width="60" height="80" fill="url(#paperGrad)" transform="rotate(10 850 605)" filter="url(#shadow)" />
+    <rect x="900" y="615" width="60" height="80" fill="#f8f9f9" transform="rotate(-15 900 615)" filter="url(#shadow)" />
+    <rect x="1000" y="580" width="150" height="120" fill="url(#paperGrad)" transform="rotate(5 1000 580)" filter="url(#shadow)" />
+    <rect x="1020" y="570" width="140" height="110" fill="url(#paperGrad)" transform="rotate(-8 1020 570)" filter="url(#shadow)" />
+    <rect x="1200" y="620" width="60" height="80" fill="url(#paperGrad)" transform="rotate(35 1200 620)" filter="url(#shadow)" />
+    <rect x="1250" y="600" width="60" height="80" fill="url(#paperGrad)" transform="rotate(-45 1250 600)" filter="url(#shadow)" />
+
+    <!-- Stacks of books/folders on the right of desk -->
+    <rect x="1150" y="580" width="120" height="20" fill="#78281f" stroke="#1f130b" stroke-width="2" />
+    <rect x="1160" y="560" width="110" height="20" fill="#1a5276" stroke="#1f130b" stroke-width="2" />
+    <rect x="1140" y="540" width="130" height="20" fill="#145a32" stroke="#1f130b" stroke-width="2" />
+    <rect x="1165" y="520" width="100" height="20" fill="#9a7d0a" stroke="#1f130b" stroke-width="2" />
+
+    <!-- Coffee mugs / stains -->
+    <ellipse cx="880" cy="650" rx="15" ry="5" fill="#5d4037" opacity="0.6" />
+    <rect x="1050" y="530" width="30" height="40" fill="#e5e7e9" filter="url(#shadow)" rx="5" />
+    <path d="M 1080,540 Q 1100,550 1080,560" fill="none" stroke="#e5e7e9" stroke-width="5" />
+    <ellipse cx="1065" cy="530" rx="15" ry="5" fill="#3e2723" />
+
+    <!-- Papers overflowing and strewn on the floor -->
+    <rect x="250" y="850" width="80" height="100" fill="url(#paperGrad)" transform="rotate(15 250 850)" filter="url(#shadow)" />
+    <rect x="300" y="880" width="80" height="100" fill="url(#paperGrad)" transform="rotate(-25 300 880)" filter="url(#shadow)" />
+    <rect x="350" y="950" width="90" height="70" fill="url(#paperGrad)" transform="rotate(45 350 950)" filter="url(#shadow)" />
+    <rect x="420" y="900" width="80" height="100" fill="#f8f9f9" transform="rotate(-10 420 900)" filter="url(#shadow)" />
+
+    <!-- Floor right area -->
+    <rect x="1350" y="860" width="80" height="100" fill="url(#paperGrad)" transform="rotate(33 1350 860)" filter="url(#shadow)" />
+    <rect x="1450" y="840" width="80" height="100" fill="url(#paperGrad)" transform="rotate(-12 1450 840)" filter="url(#shadow)" />
+    <rect x="1400" y="920" width="100" height="80" fill="url(#paperGrad)" transform="rotate(75 1400 920)" filter="url(#shadow)" />
+
+    <!-- Books thrown to the floor -->
+    <rect x="1280" y="950" width="120" height="80" fill="#17202a" transform="rotate(-20 1280 950)" filter="url(#shadow)" />
+    <rect x="400" y="830" width="100" height="60" fill="#641e16" transform="rotate(10 400 830)" filter="url(#shadow)" />
+
+    <!-- General Dark Ambient Lighting Effects (Vignette mapped over everything) -->
+    <radialGradient id="vignette" cx="50%" cy="50%" r="75%">
+        <stop offset="60%" stop-color="#000" stop-opacity="0" />
+        <stop offset="90%" stop-color="#000" stop-opacity="0.6" />
+        <stop offset="100%" stop-color="#000" stop-opacity="0.9" />
+    </radialGradient>
+    <rect width="100%" height="100%" fill="url(#vignette)" pointer-events="none" />
+</svg>
