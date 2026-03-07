@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useRef, useEffect } from 'react';
 import {
     ReactFlow,
     Controls,
@@ -27,6 +27,84 @@ export const StoryEditor: React.FC = () => {
     const [nodes, setNodes] = useState<Node[]>(initialNodes);
     const [edges, setEdges] = useState<Edge[]>(initialEdges);
     const [editingSceneId, setEditingSceneId] = useState<string | null>(null);
+
+    const nodesRef = useRef(nodes);
+    const storyRef = useRef(story);
+    const copiedScenesRef = useRef<Scene[]>([]);
+
+    useEffect(() => {
+        nodesRef.current = nodes;
+    }, [nodes]);
+
+    useEffect(() => {
+        storyRef.current = story;
+    }, [story]);
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            // Ignore if typing in input or textarea
+            if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+                return;
+            }
+
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'c') {
+                const selected = nodesRef.current.filter(n => n.selected);
+                if (selected.length > 0) {
+                    const scenesToCopy = selected.map(n => n.data.scene as Scene).filter(Boolean);
+                    copiedScenesRef.current = scenesToCopy;
+                }
+            } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'v') {
+                const copiedScenes = copiedScenesRef.current;
+                const currentStory = storyRef.current;
+
+                if (copiedScenes.length > 0 && currentStory) {
+                    let updatedStory = { ...currentStory };
+                    const newNodes: Node[] = [];
+                    const ts = Date.now();
+
+                    copiedScenes.forEach((scene, index) => {
+                        const newSceneId = `scene-${ts}-${index}-${Math.floor(Math.random() * 1000)}`;
+                        const newScene: Scene = {
+                            ...JSON.parse(JSON.stringify(scene)),
+                            id: newSceneId,
+                            name: `${scene.name} (Copy)`,
+                            connectedScenes: [] // Don't copy connections for now
+                        };
+
+                        updatedStory = {
+                            ...updatedStory,
+                            scenes: {
+                                ...updatedStory.scenes,
+                                [newSceneId]: newScene
+                            }
+                        };
+
+                        const originalNode = nodesRef.current.find(n => n.data?.scene?.id === scene.id);
+                        const position = originalNode
+                            ? { x: originalNode.position.x + 50, y: originalNode.position.y + 50 }
+                            : { x: 100 + index * 50, y: 100 + index * 50 };
+
+                        newNodes.push({
+                            id: newSceneId,
+                            position,
+                            data: { label: newScene.name, scene: newScene },
+                            type: 'default',
+                            selected: true,
+                        });
+                    });
+
+                    setStory(updatedStory);
+                    setNodes(nds => [
+                        ...nds.map(n => ({ ...n, selected: false })),
+                        ...newNodes
+                    ]);
+                }
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, []);
 
     const onNodesChange = useCallback(
         (changes: NodeChange<Node>[]) => setNodes((nds) => applyNodeChanges(changes, nds)),
