@@ -212,7 +212,7 @@ export const ConversationEditor: React.FC<ConversationEditorProps> = ({ story, c
                 const existingNode = prevNodes.find(n => n.id === nodeId);
                 newNodes.push({
                     id: nodeId,
-                    position: existingNode ? existingNode.position : { x: 100 + (index * 250), y: 150 },
+                    position: dialogue.position ? dialogue.position : (existingNode ? existingNode.position : { x: 100 + (index * 250), y: 150 }),
                     data: { label: dialogue.text.substring(0, 30) + '...', dialogueNode: dialogue },
                     type: 'default'
                 });
@@ -286,6 +286,28 @@ export const ConversationEditor: React.FC<ConversationEditorProps> = ({ story, c
     const onNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
         setSelectedNodeId(node.id);
     }, []);
+
+    const onNodeDragStop = useCallback((event: React.MouseEvent, node: Node) => {
+        const dialogueNode = character.dialogueNodes[node.id];
+        if (dialogueNode) {
+            onUpdateStory({
+                ...story,
+                characters: {
+                    ...story.characters,
+                    [character.id]: {
+                        ...character,
+                        dialogueNodes: {
+                            ...character.dialogueNodes,
+                            [node.id]: {
+                                ...dialogueNode,
+                                position: node.position
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }, [character, story, onUpdateStory]);
 
     const onPaneClick = useCallback(() => {
         setSelectedNodeId(null);
@@ -453,6 +475,7 @@ export const ConversationEditor: React.FC<ConversationEditorProps> = ({ story, c
                         onEdgesChange={onEdgesChange}
                         onConnect={onConnect}
                         onNodeClick={onNodeClick}
+                        onNodeDragStop={onNodeDragStop}
                         onPaneClick={onPaneClick}
                         fitView
                     >

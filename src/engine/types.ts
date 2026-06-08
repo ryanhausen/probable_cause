@@ -26,6 +26,7 @@ export interface DialogueNode {
     id: string;
     text: string;
     options: DialogueOption[];
+    position?: { x: number; y: number };
 }
 
 export interface Character {
