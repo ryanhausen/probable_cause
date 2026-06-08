@@ -299,17 +299,17 @@ export const StoryEditor: React.FC = () => {
         <div style={{ display: 'flex', width: '100vw', height: '100vh', backgroundColor: '#f3f4f6', color: '#111827' }}>
             <div style={{ flex: 1, position: 'relative' }}>
                 <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 10, display: 'flex', gap: '10px', alignItems: 'center' }}>
-                    <button style={{ padding: '8px 16px', background: '#10b981', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)' }} onClick={handleNewStory}>
+                    <button style={{ display: 'inline-flex', alignItems: 'center', height: '36px', padding: '0 16px', boxSizing: 'border-box', background: '#3b82f6', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', fontSize: '14px', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)' }} onClick={handleNewStory}>
                         New Story
                     </button>
-                    <label style={{ padding: '8px 16px', background: '#8b5cf6', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', margin: 0, fontWeight: 'bold', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)' }}>
+                    <label style={{ display: 'inline-flex', alignItems: 'center', height: '36px', padding: '0 16px', boxSizing: 'border-box', background: '#3b82f6', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', margin: 0, fontWeight: 'bold', fontSize: '14px', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)' }}>
                         Load Story
                         <input type="file" accept=".json" style={{ display: 'none' }} onChange={handleLoadStory} />
                     </label>
-                    <button style={{ padding: '8px 16px', background: story ? '#3b82f6' : '#e5e7eb', color: story ? 'white' : '#9ca3af', border: 'none', borderRadius: '4px', cursor: story ? 'pointer' : 'not-allowed', fontWeight: 'bold', boxShadow: story ? '0 1px 2px 0 rgba(0, 0, 0, 0.05)' : 'none' }} onClick={handleSaveStory} disabled={!story}>
+                    <button style={{ display: 'inline-flex', alignItems: 'center', height: '36px', padding: '0 16px', boxSizing: 'border-box', background: story ? '#3b82f6' : '#e5e7eb', color: story ? 'white' : '#9ca3af', border: 'none', borderRadius: '4px', cursor: story ? 'pointer' : 'not-allowed', fontWeight: 'bold', fontSize: '14px', boxShadow: story ? '0 1px 2px 0 rgba(0, 0, 0, 0.05)' : 'none' }} onClick={handleSaveStory} disabled={!story}>
                         Save Story
                     </button>
-                    <button style={{ padding: '8px 16px', background: '#f59e0b', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)' }} onClick={loadDefaultStory}>
+                    <button style={{ display: 'inline-flex', alignItems: 'center', height: '36px', padding: '0 16px', boxSizing: 'border-box', background: '#3b82f6', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', fontSize: '14px', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)' }} onClick={loadDefaultStory}>
                         Load Default Story
                     </button>
                 </div>
