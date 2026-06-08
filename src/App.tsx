@@ -5,9 +5,9 @@ import { GameLayout } from './components/GameLayout';
 import { StoryEditor } from './components/StoryEditor/StoryEditor';
 
 function App() {
-  const { currentStory } = useGameStore();
+  const { currentStory, inMenu } = useGameStore();
 
-  const isEditorMode = new URLSearchParams(window.location.search).get('editor') === 'true';
+  const isEditorMode = window.location.pathname === '/editor';
 
   if (isEditorMode) {
     return <StoryEditor />;
@@ -15,7 +15,7 @@ function App() {
 
   return (
     <>
-      {currentStory ? <GameLayout /> : <MainMenu />}
+      {!currentStory || inMenu ? <MainMenu /> : <GameLayout />}
     </>
   );
 }

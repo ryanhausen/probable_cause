@@ -7,13 +7,16 @@ interface SceneEditorProps {
     scene: Scene;
     onSave: (updatedScene: Scene) => void;
     onClose: () => void;
+    onUpdateStory?: (updatedStory: Story) => void;
 }
 
-export const SceneEditor: React.FC<SceneEditorProps> = ({ story, scene, onSave, onClose }) => {
+export const SceneEditor: React.FC<SceneEditorProps> = (props) => {
+    const { story, scene, onSave, onClose, onUpdateStory } = props;
     const [name, setName] = useState(scene.name);
     const [description, setDescription] = useState(scene.description);
-    const [imageUrl, setImageUrl] = useState(scene.imageUrl || '');
     const [interactables, setInteractables] = useState<Interactable[]>(scene.interactables || []);
+    const [charactersPresent, setCharactersPresent] = useState<string[]>(scene.charactersPresent || []);
+    const [selectedCharacterToAdd, setSelectedCharacterToAdd] = useState<string>('');
     const [editingCharacter, setEditingCharacter] = useState<Character | null>(null);
 
     const handleSave = () => {
@@ -21,8 +24,9 @@ export const SceneEditor: React.FC<SceneEditorProps> = ({ story, scene, onSave, 
             ...scene,
             name,
             description,
-            imageUrl: imageUrl || undefined,
-            interactables
+            imageUrl: scene.imageUrl,
+            interactables,
+            charactersPresent
         });
     };
 
@@ -41,6 +45,53 @@ export const SceneEditor: React.FC<SceneEditorProps> = ({ story, scene, onSave, 
         const updated = [...interactables];
         updated[index] = { ...updated[index], [field]: value };
         setInteractables(updated);
+    };
+
+    const removeCharacter = (charId: string) => {
+        setCharactersPresent(charactersPresent.filter(id => id !== charId));
+    };
+
+    const updateCharacter = (charId: string, field: keyof Character, value: any) => {
+        if (!props.onUpdateStory) return;
+        const charToUpdate = story.characters[charId];
+        if (!charToUpdate) return;
+        
+        props.onUpdateStory({
+            ...story,
+            characters: {
+                ...story.characters,
+                [charId]: { ...charToUpdate, [field]: value }
+            }
+        });
+    };
+
+    const addNewCharacter = () => {
+        const newCharId = `char-${Date.now()}`;
+        const newChar: Character = {
+            id: newCharId,
+            name: 'New Character',
+            description: 'A newly added character.',
+            dialogueNodes: {
+                'node-1': { id: 'node-1', text: 'Hello.', options: [] }
+            },
+            currentDialogueNodeId: 'node-1'
+        };
+
+        if (props.onUpdateStory) { // Need to access onUpdateStory, wait, it's passed as a parameter
+            props.onUpdateStory({
+                ...story,
+                characters: { ...story.characters, [newCharId]: newChar }
+            });
+        }
+        
+        setCharactersPresent([...charactersPresent, newCharId]);
+    };
+
+    const addExistingCharacter = () => {
+        if (selectedCharacterToAdd && !charactersPresent.includes(selectedCharacterToAdd)) {
+            setCharactersPresent([...charactersPresent, selectedCharacterToAdd]);
+            setSelectedCharacterToAdd('');
+        }
     };
 
     const handleSaveConversation = () => {
@@ -76,37 +127,76 @@ export const SceneEditor: React.FC<SceneEditorProps> = ({ story, scene, onSave, 
                 </div>
 
                 <div style={{ marginBottom: '16px' }}>
-                    <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '4px' }}>Image URL</label>
-                    <input type="text" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px' }} placeholder="/assets/image.svg" />
-                </div>
-
-                <div style={{ marginBottom: '16px' }}>
                     <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '4px' }}>Description</label>
                     <textarea value={description} onChange={(e) => setDescription(e.target.value)} style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', minHeight: '100px' }} />
                 </div>
 
                 <div style={{ marginBottom: '16px' }}>
-                    <h4 style={{ fontWeight: 'bold', marginBottom: '8px' }}>Characters Present</h4>
-                    {scene.charactersPresent.map(charId => {
+                    <h4 style={{ fontWeight: 'bold', marginBottom: '8px', display: 'flex', justifyContent: 'space-between' }}>
+                        Characters Present
+                        <button onClick={addNewCharacter} style={{ padding: '4px 8px', fontSize: '0.875rem', cursor: 'pointer', background: '#e5e7eb', color: '#111827', border: 'none', borderRadius: '4px' }}>+ New</button>
+                    </h4>
+                    
+                    <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
+                        <select 
+                            value={selectedCharacterToAdd} 
+                            onChange={(e) => setSelectedCharacterToAdd(e.target.value)}
+                            style={{ flex: 1, padding: '4px 8px', border: '1px solid #d1d5db', borderRadius: '4px' }}
+                        >
+                            <option value="">-- Select Existing Character --</option>
+                            {Object.values(story.characters)
+                                .filter(char => !charactersPresent.includes(char.id))
+                                .map(char => (
+                                    <option key={char.id} value={char.id}>{char.name}</option>
+                                ))
+                            }
+                        </select>
+                        <button 
+                            onClick={addExistingCharacter}
+                            disabled={!selectedCharacterToAdd}
+                            style={{ padding: '4px 12px', background: 'white', color: '#111827', border: '1px solid #d1d5db', borderRadius: '4px', cursor: selectedCharacterToAdd ? 'pointer' : 'not-allowed', opacity: selectedCharacterToAdd ? 1 : 0.5 }}
+                        >
+                            Add
+                        </button>
+                    </div>
+
+                    {charactersPresent.map(charId => {
                         const char = story.characters[charId];
-                        if (!char) return <div key={charId}>Unknown Character: {charId}</div>;
+                        if (!char) return <div key={charId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '1px solid #e5e7eb', padding: '10px', marginBottom: '10px', borderRadius: '4px' }}>
+                            <div>Unknown Character: {charId}</div>
+                            <button onClick={() => removeCharacter(charId)} style={{ padding: '4px 8px', color: '#ef4444', background: 'none', border: 'none', cursor: 'pointer' }}>Remove</button>
+                        </div>;
                         return (
-                            <div key={charId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '1px solid #e5e7eb', padding: '10px', marginBottom: '10px', borderRadius: '4px' }}>
-                                <div>
-                                    <div style={{ fontWeight: 'bold' }}>{char.name}</div>
-                                    <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>{char.description}</div>
+                            <div key={charId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', border: '1px solid #e5e7eb', padding: '10px', marginBottom: '10px', borderRadius: '4px' }}>
+                                <div style={{ flex: 1, marginRight: '10px' }}>
+                                    <input 
+                                        type="text" 
+                                        value={char.name} 
+                                        onChange={(e) => updateCharacter(charId, 'name', e.target.value)}
+                                        style={{ width: '100%', padding: '4px', marginBottom: '4px', fontWeight: 'bold', border: '1px solid #d1d5db', borderRadius: '4px' }}
+                                        placeholder="Character Name"
+                                    />
+                                    <textarea 
+                                        value={char.description} 
+                                        onChange={(e) => updateCharacter(charId, 'description', e.target.value)}
+                                        style={{ width: '100%', padding: '4px', fontSize: '0.875rem', color: '#111827', border: '1px solid #d1d5db', borderRadius: '4px', minHeight: '40px' }}
+                                        placeholder="Description"
+                                    />
                                 </div>
-                                <button onClick={() => setEditingCharacter(char)} style={{ padding: '4px 8px', background: 'white', border: '1px solid #d1d5db', borderRadius: '4px', cursor: 'pointer' }}>Edit Conversation</button>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    <button onClick={() => setEditingCharacter(char)} style={{ padding: '4px 8px', background: 'white', color: '#111827', border: '1px solid #d1d5db', borderRadius: '4px', cursor: 'pointer' }}>Edit Conversation</button>
+                                    <button onClick={() => removeCharacter(charId)} style={{ padding: '4px 8px', color: '#ef4444', background: 'white', border: '1px solid #fecaca', borderRadius: '4px', cursor: 'pointer' }}>Remove</button>
+                                </div>
                             </div>
                         );
                     })}
-                    {scene.charactersPresent.length === 0 && <p style={{ color: '#6b7280', fontSize: '0.875rem' }}>No characters present.</p>}
+                    {charactersPresent.length === 0 && <p style={{ color: '#6b7280', fontSize: '0.875rem' }}>No characters present.</p>}
                 </div>
 
                 <div style={{ marginBottom: '16px' }}>
                     <h4 style={{ fontWeight: 'bold', marginBottom: '8px', display: 'flex', justifyContent: 'space-between' }}>
                         Interactables
-                        <button onClick={addInteractable} style={{ padding: '4px 8px', fontSize: '0.875rem', cursor: 'pointer', background: '#e5e7eb', border: 'none', borderRadius: '4px' }}>+ Add</button>
+                        <button onClick={addInteractable} style={{ padding: '4px 8px', fontSize: '0.875rem', cursor: 'pointer', background: '#e5e7eb', color: '#111827', border: 'none', borderRadius: '4px' }}>+ Add</button>
                     </h4>
                     {interactables.map((int, idx) => (
                         <div key={int.id} style={{ border: '1px solid #e5e7eb', padding: '10px', marginBottom: '10px', borderRadius: '4px' }}>
@@ -131,7 +221,13 @@ export const SceneEditor: React.FC<SceneEditorProps> = ({ story, scene, onSave, 
 
             {editingCharacter && (
                 <div style={{ flex: 1, position: 'relative' }}>
-                    <ConversationEditor character={editingCharacter} onSave={handleSaveConversation} onClose={() => setEditingCharacter(null)} />
+                    <ConversationEditor 
+                        story={story}
+                        character={story.characters[editingCharacter.id]} 
+                        onSave={handleSaveConversation} 
+                        onClose={() => setEditingCharacter(null)} 
+                        onUpdateStory={props.onUpdateStory!}
+                    />
                 </div>
             )}
         </div>

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { calculatePlausibility } from '../gameStore';
-import { defaultStory } from '../../stories/defaultStory';
+import defaultStory from '../../../public/stories/defaultStory.json';
 
 describe('gameStore calculations', () => {
     it('calculates base plausibility with no clues', () => {

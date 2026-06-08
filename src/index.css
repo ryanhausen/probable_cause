@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
 :root {
   /* Noir Aesthetic Color Palette */
@@ -27,6 +27,7 @@
   /* Typography */
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-serif: 'Playfair Display', Georgia, serif;
+  --font-mono: 'Fira Code', 'Courier New', Courier, monospace;
 
   /* Shadows and FX */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
@@ -144,4 +145,166 @@ button:disabled {
 
 .animate-slide-up {
   animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* --- Terminal Retro Aesthetic UI System --- */
+
+.retro-terminal-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-color: #08090c;
+  overflow: hidden;
+  box-shadow: inset 0 0 80px rgba(0,0,0,0.9);
+}
+
+/* CRT Scanlines Overlay */
+.crt-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 999;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.12) 50%);
+  background-size: 100% 3px;
+  opacity: 0.4;
+}
+
+
+/* Terminal Font & Color themes */
+.font-terminal {
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+  color: var(--accent-primary);
+  text-shadow: 0 0 5px rgba(245, 158, 11, 0.5);
+}
+
+.font-terminal-green {
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+  color: var(--accent-success);
+  text-shadow: 0 0 5px rgba(16, 185, 129, 0.5);
+}
+
+.font-terminal-muted {
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+}
+
+/* Typing Cursor Effect */
+.terminal-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 15px;
+  background-color: var(--accent-primary);
+  margin-left: 4px;
+  animation: blinkCursor 1s step-end infinite;
+  vertical-align: middle;
+}
+
+@keyframes blinkCursor {
+  from, to { background-color: transparent }
+  50% { background-color: var(--accent-primary) }
+}
+
+/* Glassmorphic Cyber Panels */
+.terminal-panel {
+  background: rgba(15, 17, 21, 0.65);
+  border: 1px solid rgba(55, 65, 81, 0.5);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.7), inset 0 0 12px rgba(245, 158, 11, 0.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.terminal-panel:hover {
+  border-color: rgba(245, 158, 11, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(245, 158, 11, 0.08);
+}
+
+/* Terminal Buttons/Controls */
+.terminal-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  background: rgba(26, 29, 36, 0.4);
+  border: 1px solid rgba(55, 65, 81, 0.4);
+  border-radius: var(--border-radius);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  text-align: left;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.terminal-btn::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent-primary);
+  transform: scaleY(0);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.terminal-btn:hover {
+  background: rgba(245, 158, 11, 0.05);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  padding-left: 1.5rem;
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.1);
+}
+
+.terminal-btn:hover::before {
+  transform: scaleY(1);
+}
+
+.terminal-btn-success:hover {
+  background: rgba(16, 185, 129, 0.05);
+  border-color: var(--accent-success);
+  color: var(--accent-success);
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);
+}
+
+.terminal-btn-success::before {
+  background: var(--accent-success);
+}
+
+/* Teletype feed layout */
+.feed-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  height: 100%;
+  overflow-y: auto;
+  padding: 1.25rem;
+  border-radius: var(--border-radius);
+}
+
+.feed-item {
+  padding: 0.75rem 1rem;
+  border-radius: var(--border-radius);
+  background: rgba(15, 17, 21, 0.5);
+  border-left: 3px solid var(--border-color);
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.feed-item-action {
+  border-left-color: var(--accent-primary);
+  background: rgba(245, 158, 11, 0.02);
+}
+
+.feed-item-clue {
+  border-left-color: var(--accent-success);
+  background: rgba(16, 185, 129, 0.02);
 }

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useGameStore } from '../engine/gameStore';
-import { Map, BookOpen, Briefcase, ChevronRight } from 'lucide-react';
+import { Map, BookOpen, Briefcase, ChevronRight, Home } from 'lucide-react';
 import { SceneViewer } from './SceneViewer';
 import { CaseNotebook } from './CaseNotebook';
 import { DA_Office } from './DA_Office';
 
 export const GameLayout: React.FC = () => {
-    const { currentSceneId, currentStory } = useGameStore();
+    const { currentSceneId, currentStory, setInMenu } = useGameStore();
     const [activeTab, setActiveTab] = useState<'scene' | 'notebook' | 'da'>('scene');
 
     if (!currentStory || !currentSceneId) return null;
@@ -33,6 +33,13 @@ export const GameLayout: React.FC = () => {
                 boxShadow: 'var(--shadow-lg)'
             }}>
                 <div style={{ display: 'flex', gap: '2rem' }}>
+                    <NavButton
+                        icon={<Home />}
+                        label="Home Menu"
+                        active={false}
+                        onClick={() => setInMenu(true)}
+                    />
+                    <div style={{ width: '1px', backgroundColor: 'var(--border-color)', height: '24px', alignSelf: 'center', opacity: 0.5 }} />
                     <NavButton
                         icon={<Map />}
                         label="Location"

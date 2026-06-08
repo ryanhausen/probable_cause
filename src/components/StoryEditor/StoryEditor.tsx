@@ -16,8 +16,8 @@ import type {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import type { Story, Scene } from '../../engine/types';
-import { defaultStory } from '../../stories/defaultStory';
 import { SceneEditor } from './SceneEditor';
+import { ConversationEditor } from './ConversationEditor';
 
 const initialNodes: Node[] = [];
 const initialEdges: Edge[] = [];
@@ -27,6 +27,8 @@ export const StoryEditor: React.FC = () => {
     const [nodes, setNodes] = useState<Node[]>(initialNodes);
     const [edges, setEdges] = useState<Edge[]>(initialEdges);
     const [editingSceneId, setEditingSceneId] = useState<string | null>(null);
+    const [editingGlobalCharacterId, setEditingGlobalCharacterId] = useState<string | null>(null);
+    const [editingGlobalConversationId, setEditingGlobalConversationId] = useState<string | null>(null);
 
     const nodesRef = useRef(nodes);
     const storyRef = useRef(story);
@@ -79,7 +81,7 @@ export const StoryEditor: React.FC = () => {
                             }
                         };
 
-                        const originalNode = nodesRef.current.find(n => n.data?.scene?.id === scene.id);
+                        const originalNode = nodesRef.current.find(n => (n.data?.scene as Scene)?.id === scene.id);
                         const position = originalNode
                             ? { x: originalNode.position.x + 50, y: originalNode.position.y + 50 }
                             : { x: 100 + index * 50, y: 100 + index * 50 };
@@ -153,11 +155,11 @@ export const StoryEditor: React.FC = () => {
 
     const handleSaveStory = () => {
         if (!story) return;
-        const tsContent = `import type { Story } from '../engine/types';\n\nexport const story: Story = ${JSON.stringify(story, null, 4)};\n`;
-        const dataStr = "data:text/typescript;charset=utf-8," + encodeURIComponent(tsContent);
+        const jsonContent = JSON.stringify(story, null, 4);
+        const dataStr = "data:application/json;charset=utf-8," + encodeURIComponent(jsonContent);
         const downloadAnchorNode = document.createElement('a');
         downloadAnchorNode.setAttribute("href", dataStr);
-        downloadAnchorNode.setAttribute("download", `${story.id}.ts`);
+        downloadAnchorNode.setAttribute("download", `${story.id}.json`);
         document.body.appendChild(downloadAnchorNode); // required for firefox
         downloadAnchorNode.click();
         downloadAnchorNode.remove();
@@ -171,34 +173,13 @@ export const StoryEditor: React.FC = () => {
         reader.onload = (e) => {
             try {
                 const content = e.target?.result as string;
-
-                // 1. Strip import statements
-                let sanitizedContent = content.replace(/import\s+.*?;?\n/g, '');
-
-                // 2. We need to handle references to missing imported variables like `museumLobbyImage`.
-                // A reliable way for this simple tool is to convert the object literal back to JSON.
-                // However, since it's TS, we can execute it if we define proxies for those missing variables,
-                // OR we can just use a regex to replace known image references or wrap them in quotes.
-                // For a robust generic solution, we create a function that defines common missing variables
-                // as strings, so they evaluation doesn't throw a ReferenceError.
-
-                // Extract all variable names from import statements to mock them
-                const importMatches = [...content.matchAll(/import\s+(\w+)\s+from\s+[^;\n]+;?/g)];
-                const mockVars = importMatches.map(m => `const ${m[1]} = "imported-image-placeholder";`).join('\n');
-
-                const codeToEval = `
-                    ${mockVars}
-                    ${sanitizedContent.replace(/export\s+const\s+\w+\s*(?::\s*[A-Za-z0-9_]+)?\s*=\s*/, 'return ')}
-                `;
-
-                const getStory = new Function(codeToEval);
-                const parsedStory = getStory() as Story;
+                const parsedStory = JSON.parse(content) as Story;
 
                 setStory(parsedStory);
                 populateGraphFromStory(parsedStory);
             } catch (err) {
-                console.error("Failed to parse story ts", err);
-                alert("Invalid Story TS file. Ensure it exports a simple JS object.\nError: " + (err as Error).message);
+                console.error("Failed to parse story json", err);
+                alert("Invalid Story JSON file.\nError: " + (err as Error).message);
             }
         };
         reader.readAsText(file);
@@ -235,6 +216,47 @@ export const StoryEditor: React.FC = () => {
         setEditingSceneId(null);
     };
 
+    const updateGlobalCharacter = (charId: string, field: keyof Character, value: any) => {
+        if (!story) return;
+        const charToUpdate = story.characters[charId];
+        if (!charToUpdate) return;
+        
+        setStory({
+            ...story,
+            characters: {
+                ...story.characters,
+                [charId]: { ...charToUpdate, [field]: value }
+            }
+        });
+    };
+
+    const removeGlobalCharacter = (charId: string) => {
+        if (!story) return;
+        if (!window.confirm("Are you sure you want to completely remove this character from the story? This will remove them from all scenes.")) return;
+
+        const newStory = { ...story };
+        
+        // Remove from characters dict
+        const newCharacters = { ...newStory.characters };
+        delete newCharacters[charId];
+        newStory.characters = newCharacters;
+
+        // Remove from all scenes
+        const newScenes = { ...newStory.scenes };
+        Object.keys(newScenes).forEach(sceneId => {
+            const scene = newScenes[sceneId];
+            if (scene.charactersPresent && scene.charactersPresent.includes(charId)) {
+                newScenes[sceneId] = {
+                    ...scene,
+                    charactersPresent: scene.charactersPresent.filter(id => id !== charId)
+                };
+            }
+        });
+        newStory.scenes = newScenes;
+
+        setStory(newStory);
+    };
+
     const populateGraphFromStory = (s: Story) => {
         const newNodes: Node[] = Object.values(s.scenes).map((scene: Scene, index: number) => ({
             id: scene.id,
@@ -258,26 +280,36 @@ export const StoryEditor: React.FC = () => {
         setEdges(newEdges);
     };
 
-    const loadDefaultStory = () => {
-        setStory(defaultStory);
-        populateGraphFromStory(defaultStory);
+    const loadDefaultStory = async () => {
+        try {
+            const response = await fetch('/stories/defaultStory.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const defaultStory: Story = await response.json();
+            setStory(defaultStory);
+            populateGraphFromStory(defaultStory);
+        } catch (error) {
+            console.error("Failed to load default story:", error);
+            alert("Failed to load the default story. Please check the console for details.");
+        }
     };
 
     return (
         <div style={{ display: 'flex', width: '100vw', height: '100vh', backgroundColor: '#f3f4f6', color: '#111827' }}>
             <div style={{ flex: 1, position: 'relative' }}>
                 <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 10, display: 'flex', gap: '10px', alignItems: 'center' }}>
-                    <button style={{ padding: '8px 16px', background: 'white', border: '1px solid #d1d5db', borderRadius: '4px', cursor: 'pointer' }} onClick={handleNewStory}>
+                    <button style={{ padding: '8px 16px', background: '#10b981', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)' }} onClick={handleNewStory}>
                         New Story
                     </button>
-                    <label style={{ padding: '8px 16px', background: 'white', border: '1px solid #d1d5db', borderRadius: '4px', cursor: 'pointer', margin: 0 }}>
+                    <label style={{ padding: '8px 16px', background: '#8b5cf6', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', margin: 0, fontWeight: 'bold', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)' }}>
                         Load Story
-                        <input type="file" accept=".ts" style={{ display: 'none' }} onChange={handleLoadStory} />
+                        <input type="file" accept=".json" style={{ display: 'none' }} onChange={handleLoadStory} />
                     </label>
-                    <button style={{ padding: '8px 16px', background: 'white', border: '1px solid #d1d5db', borderRadius: '4px', cursor: 'pointer' }} onClick={handleSaveStory} disabled={!story}>
+                    <button style={{ padding: '8px 16px', background: story ? '#3b82f6' : '#e5e7eb', color: story ? 'white' : '#9ca3af', border: 'none', borderRadius: '4px', cursor: story ? 'pointer' : 'not-allowed', fontWeight: 'bold', boxShadow: story ? '0 1px 2px 0 rgba(0, 0, 0, 0.05)' : 'none' }} onClick={handleSaveStory} disabled={!story}>
                         Save Story
                     </button>
-                    <button style={{ padding: '8px 16px', background: 'white', border: '1px solid #d1d5db', borderRadius: '4px', cursor: 'pointer' }} onClick={loadDefaultStory}>
+                    <button style={{ padding: '8px 16px', background: '#f59e0b', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)' }} onClick={loadDefaultStory}>
                         Load Default Story
                     </button>
                 </div>
@@ -300,6 +332,7 @@ export const StoryEditor: React.FC = () => {
                         scene={story.scenes[editingSceneId]}
                         onSave={handleSaveScene}
                         onClose={() => setEditingSceneId(null)}
+                        onUpdateStory={setStory}
                     />
                 )}
             </div>
@@ -308,6 +341,22 @@ export const StoryEditor: React.FC = () => {
                 <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '16px' }}>Story Info</h2>
                 {story ? (
                     <div>
+                        <h3 style={{ fontWeight: 'bold', marginTop: '16px' }}>Characters</h3>
+                        {Object.values(story.characters || {}).map(char => (
+                            <div key={char.id} style={{ marginBottom: '10px', padding: '10px', border: '1px solid #e5e7eb', borderRadius: '4px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <div style={{ fontWeight: 'bold' }}>{char.name}</div>
+                                    <div style={{ display: 'flex', gap: '8px' }}>
+                                        <button onClick={() => setEditingGlobalCharacterId(char.id)} style={{ padding: '4px 8px', background: 'white', border: '1px solid #d1d5db', borderRadius: '4px', cursor: 'pointer', fontSize: '0.875rem' }}>Edit</button>
+                                        <button onClick={() => removeGlobalCharacter(char.id)} style={{ padding: '4px 8px', color: '#ef4444', background: 'white', border: '1px solid #fecaca', borderRadius: '4px', cursor: 'pointer', fontSize: '0.875rem' }}>Remove</button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                        {Object.values(story.characters || {}).length === 0 && (
+                            <p style={{ color: '#6b7280', fontSize: '0.875rem' }}>No characters in story.</p>
+                        )}
+
                         <h3 style={{ fontWeight: 'bold', marginTop: '16px' }}>Theories</h3>
                         {Object.values(story.theories).map(theory => {
                             // Calculate max possible plausibility for this theory
@@ -340,6 +389,63 @@ export const StoryEditor: React.FC = () => {
                     <p style={{ color: '#6b7280' }}>No story loaded. Load a story to view info.</p>
                 )}
             </div>
+
+            {editingGlobalCharacterId && story && story.characters[editingGlobalCharacterId] && (
+                <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 2000, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <div style={{ background: 'white', padding: '24px', borderRadius: '8px', width: '500px', maxWidth: '90%', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' }}>
+                        <h3 style={{ marginTop: 0, marginBottom: '16px', fontSize: '1.25rem', fontWeight: 'bold' }}>Edit Character</h3>
+                        
+                        <div style={{ marginBottom: '16px' }}>
+                            <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '4px' }}>Name</label>
+                            <input 
+                                type="text" 
+                                value={story.characters[editingGlobalCharacterId].name} 
+                                onChange={(e) => updateGlobalCharacter(editingGlobalCharacterId, 'name', e.target.value)}
+                                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px' }}
+                            />
+                        </div>
+
+                        <div style={{ marginBottom: '16px' }}>
+                            <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '4px' }}>Description</label>
+                            <textarea 
+                                value={story.characters[editingGlobalCharacterId].description} 
+                                onChange={(e) => updateGlobalCharacter(editingGlobalCharacterId, 'description', e.target.value)}
+                                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', minHeight: '100px' }}
+                            />
+                        </div>
+
+                        <div style={{ marginBottom: '24px' }}>
+                            <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '4px' }}>Scenes Present In</label>
+                            <ul style={{ margin: 0, paddingLeft: '20px', color: '#4b5563' }}>
+                                {Object.values(story.scenes)
+                                    .filter(scene => scene.charactersPresent?.includes(editingGlobalCharacterId))
+                                    .map(scene => (
+                                        <li key={scene.id}>{scene.name}</li>
+                                    ))
+                                }
+                                {Object.values(story.scenes).filter(scene => scene.charactersPresent?.includes(editingGlobalCharacterId)).length === 0 && (
+                                    <li style={{ listStyle: 'none', marginLeft: '-20px' }}>Not present in any scenes.</li>
+                                )}
+                            </ul>
+                        </div>
+
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                            <button onClick={() => setEditingGlobalConversationId(editingGlobalCharacterId)} style={{ padding: '8px 16px', background: 'white', color: '#111827', border: '1px solid #d1d5db', borderRadius: '4px', cursor: 'pointer' }}>Edit Conversation</button>
+                            <button onClick={() => setEditingGlobalCharacterId(null)} style={{ padding: '8px 16px', background: '#3b82f6', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Close</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {editingGlobalConversationId && story && story.characters[editingGlobalConversationId] && (
+                <ConversationEditor
+                    story={story}
+                    character={story.characters[editingGlobalConversationId]}
+                    onSave={() => setEditingGlobalConversationId(null)}
+                    onClose={() => setEditingGlobalConversationId(null)}
+                    onUpdateStory={setStory}
+                />
+            )}
         </div>
     );
 };

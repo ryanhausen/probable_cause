@@ -16,6 +16,10 @@ export const DA_Office: React.FC = () => {
         setResult(evaluation);
     };
 
+    const selectedPlausibility = selectedTheoryId ? calculatePlausibility(currentStory, selectedTheoryId, collectedClues) : null;
+    const selectColor = selectedPlausibility !== null ? (selectedPlausibility > 50 ? 'var(--accent-success)' : 'var(--accent-danger)') : 'var(--text-primary)';
+
+
     return (
         <div style={{ padding: '2rem', height: '100%', overflowY: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>District Attorney's Office</h2>
@@ -55,7 +59,7 @@ export const DA_Office: React.FC = () => {
                             width: '100%',
                             padding: '1rem',
                             backgroundColor: 'var(--bg-dark)',
-                            color: 'var(--text-primary)',
+                            color: selectColor,
                             border: '1px solid var(--border-color)',
                             borderRadius: 'var(--border-radius)',
                             marginBottom: '2rem',
@@ -63,10 +67,19 @@ export const DA_Office: React.FC = () => {
                             outline: 'none'
                         }}
                     >
-                        <option value="" disabled>Select a theory...</option>
-                        {Object.values(currentStory.theories).map(theory => (
-                            <option key={theory.id} value={theory.id}>{theory.name} - Suspect: {theory.suspectName}</option>
-                        ))}
+                        <option value="" disabled style={{ color: 'var(--text-primary)' }}>Select a theory...</option>
+                        {Object.values(currentStory.theories).map(theory => {
+                            const plausibility = calculatePlausibility(currentStory, theory.id, collectedClues);
+                            return (
+                                <option 
+                                    key={theory.id} 
+                                    value={theory.id}
+                                    style={{ color: plausibility > 50 ? 'var(--accent-success)' : 'var(--accent-danger)' }}
+                                >
+                                    {theory.name} ({plausibility}%) - Suspect: {theory.suspectName}
+                                </option>
+                            );
+                        })}
                     </select>
 
                     <button

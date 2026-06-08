@@ -6,6 +6,9 @@ const initialState = {
     currentStory: null,
     currentSceneId: null,
     collectedClues: [],
+    inMenu: true,
+    logs: [],
+    lastLoggedSceneId: null,
 };
 
 export const useGameStore = create<GameState>()(
@@ -16,7 +19,10 @@ export const useGameStore = create<GameState>()(
             loadStory: (story: Story) => set({
                 currentStory: story,
                 currentSceneId: story.startingSceneId,
-                collectedClues: []
+                collectedClues: [],
+                inMenu: false,
+                logs: [],
+                lastLoggedSceneId: null
             }),
 
             moveToScene: (sceneId: string) => set((state) => {
@@ -58,6 +64,22 @@ export const useGameStore = create<GameState>()(
             }),
 
             reset: () => set(initialState),
+
+            setInMenu: (inMenu: boolean) => set({ inMenu }),
+
+            addLog: (text: string, type: 'info' | 'action' | 'clue' = 'info') => set((state) => {
+                const now = new Date();
+                const timeStr = now.toTimeString().split(' ')[0];
+                const newLog = {
+                    id: `log-${Date.now()}-${Math.random()}`,
+                    timestamp: timeStr,
+                    text,
+                    type
+                };
+                return { logs: [...state.logs, newLog] };
+            }),
+
+            setLastLoggedSceneId: (id: string | null) => set({ lastLoggedSceneId: id }),
         }),
         {
             name: 'probable-cause-save', // unique name

@@ -1,3 +1,10 @@
+export interface LogItem {
+    id: string;
+    timestamp: string;
+    text: string;
+    type: 'info' | 'action' | 'clue';
+}
+
 export interface Clue {
     id: string;
     name: string;
@@ -72,6 +79,9 @@ export interface GameState {
     currentStory: Story | null;
     currentSceneId: string | null;
     collectedClues: string[]; // IDs of collected clues
+    inMenu: boolean;
+    logs: LogItem[];
+    lastLoggedSceneId: string | null;
 
     // Actions
     loadStory: (story: Story) => void;
@@ -79,4 +89,7 @@ export interface GameState {
     collectClue: (clueId: string) => void;
     advanceDialogue: (characterId: string, nextNodeId: string) => void;
     reset: () => void;
+    setInMenu: (inMenu: boolean) => void;
+    addLog: (text: string, type: 'info' | 'action' | 'clue') => void;
+    setLastLoggedSceneId: (id: string | null) => void;
 }
