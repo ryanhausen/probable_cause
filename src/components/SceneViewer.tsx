@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useGameStore } from '../engine/gameStore';
+import { useGameStore, isTheoryDiscovered } from '../engine/gameStore';
 import { DialogueSystem } from './DialogueSystem';
 import { Search, MessageSquare, Compass, Terminal, History, Info, Sparkles } from 'lucide-react';
 
@@ -31,7 +31,7 @@ export const SceneViewer: React.FC = () => {
         feedEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [logs]);
 
-    const handleInspectItem = (itemId: string, name: string, description: string, grantsClueId?: string) => {
+    const handleInspectItem = (_itemId: string, name: string, description: string, grantsClueId?: string) => {
         // 1. Log the player action
         addLog(`EXAMINE: ${name}`, 'action');
         
@@ -48,17 +48,32 @@ export const SceneViewer: React.FC = () => {
             if (!alreadyCollected) {
                 const clue = currentStory.clues[grantsClueId];
                 if (clue) {
+                    const nextClues = [...collectedClues, grantsClueId];
                     let modifierDetail = '';
                     if (clue.plausibilityModifiers && clue.plausibilityModifiers.length > 0) {
-                        modifierDetail = ' (' + clue.plausibilityModifiers.map(mod => {
-                            const theory = currentStory.theories[mod.theoryId];
-                            const theoryName = theory ? theory.name : mod.theoryId;
-                            const sign = mod.amount > 0 ? '+' : '';
-                            return `${theoryName}: ${sign}${mod.amount}%`;
-                        }).join(', ') + ')';
+                        const visibleModifiers = clue.plausibilityModifiers.filter(mod =>
+                            isTheoryDiscovered(currentStory, mod.theoryId, nextClues)
+                        );
+                        if (visibleModifiers.length > 0) {
+                            modifierDetail = ' (' + visibleModifiers.map(mod => {
+                                const theory = currentStory.theories[mod.theoryId];
+                                const theoryName = theory ? theory.name : mod.theoryId;
+                                const sign = mod.amount > 0 ? '+' : '';
+                                return `${theoryName}: ${sign}${mod.amount}%`;
+                            }).join(', ') + ')';
+                        }
                     }
                     
                     addLog(`[!] EVIDENCE SECURED: "${clue.name}"${modifierDetail}`, 'clue');
+
+                    // Announce any newly discovered theories
+                    Object.values(currentStory.theories).forEach(theory => {
+                        const wasDiscovered = isTheoryDiscovered(currentStory, theory.id, collectedClues);
+                        const isNowDiscovered = isTheoryDiscovered(currentStory, theory.id, nextClues);
+                        if (!wasDiscovered && isNowDiscovered) {
+                            addLog(`[!] NEW THEORY FORMULATED: "${theory.name}" (Suspect: ${theory.suspectName})`, 'clue');
+                        }
+                    });
                 }
             } else {
                 addLog(`[i] Clue already filed in notebook database.`, 'info');

@@ -8,7 +8,7 @@ interface DialogueSystemProps {
 }
 
 export const DialogueSystem: React.FC<DialogueSystemProps> = ({ characterId, onClose }) => {
-    const { currentStory, collectedClues, advanceDialogue, collectClue } = useGameStore();
+    const { currentStory, collectedClues, advanceDialogue, collectClue, addLog } = useGameStore();
 
     if (!currentStory) return null;
 
@@ -19,8 +19,25 @@ export const DialogueSystem: React.FC<DialogueSystemProps> = ({ characterId, onC
 
     const handleOptionClick = (option: any) => {
         if (option.grantsClueId) {
+            const alreadyCollected = collectedClues.includes(option.grantsClueId);
             collectClue(option.grantsClueId);
-            // We could add a toast here like "Clue Acquired!" Let's just collect the clue for now.
+
+            if (!alreadyCollected) {
+                const clue = currentStory.clues[option.grantsClueId];
+                if (clue) {
+                    const nextClues = [...collectedClues, option.grantsClueId];
+                    addLog(`[!] TESTIMONY SECURED: "${clue.name}"`, 'clue');
+
+                    // Announce any newly discovered theories
+                    Object.values(currentStory.theories).forEach(theory => {
+                        const wasDiscovered = isTheoryDiscovered(currentStory, theory.id, collectedClues);
+                        const isNowDiscovered = isTheoryDiscovered(currentStory, theory.id, nextClues);
+                        if (!wasDiscovered && isNowDiscovered) {
+                            addLog(`[!] NEW THEORY FORMULATED: "${theory.name}" (Suspect: ${theory.suspectName})`, 'clue');
+                        }
+                    });
+                }
+            }
         }
 
         if (option.nextNodeId) {

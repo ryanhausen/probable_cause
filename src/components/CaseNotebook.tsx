@@ -1,10 +1,12 @@
 import React from 'react';
-import { useGameStore, calculatePlausibility } from '../engine/gameStore';
+import { useGameStore, calculatePlausibility, getDiscoveredTheories } from '../engine/gameStore';
 
 export const CaseNotebook: React.FC = () => {
     const { currentStory, collectedClues } = useGameStore();
 
     if (!currentStory) return null;
+
+    const discoveredTheories = getDiscoveredTheories(currentStory, collectedClues);
 
     return (
         <div style={{ padding: '2rem', height: '100%', overflowY: 'auto', backgroundColor: 'var(--bg-panel)' }}>
@@ -35,24 +37,31 @@ export const CaseNotebook: React.FC = () => {
                 <div>
                     <h3 style={{ color: 'var(--text-primary)', marginBottom: '1rem' }}>Theories & Suspects</h3>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        {Object.values(currentStory.theories).map(theory => {
-                            const plausibility = calculatePlausibility(currentStory, theory.id, collectedClues);
-                            return (
-                                <div key={theory.id} style={{ backgroundColor: 'var(--bg-dark)', padding: '1rem', borderRadius: 'var(--border-radius)' }}>
-                                    <h4 style={{ margin: '0 0 0.5rem 0', color: 'var(--accent-primary)' }}>{theory.name}</h4>
-                                    <p style={{ margin: '0 0 1rem 0', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{theory.description}</p>
-                                    <div>
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                                            <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Plausibility</span>
-                                            <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>{plausibility}%</span>
-                                        </div>
-                                        <div style={{ width: '100%', height: '8px', backgroundColor: 'var(--bg-panel)', borderRadius: '4px', overflow: 'hidden' }}>
-                                            <div style={{ width: `${plausibility}%`, height: '100%', backgroundColor: plausibility > 50 ? 'var(--accent-success)' : 'var(--accent-danger)', transition: 'width 0.3s' }} />
+                        {discoveredTheories.length === 0 ? (
+                            <div style={{ backgroundColor: 'var(--bg-dark)', padding: '1.5rem', borderRadius: 'var(--border-radius)', border: '1px dashed var(--border-color)', color: 'var(--text-muted)', fontStyle: 'italic', fontSize: '0.9rem' }}>
+                                No active theories formulated yet. Follow the narrative, interrogate persons of interest, and examine evidence to develop investigative leads.
+                            </div>
+                        ) : (
+                            discoveredTheories.map(theory => {
+                                const plausibility = calculatePlausibility(currentStory, theory.id, collectedClues);
+                                return (
+                                    <div key={theory.id} style={{ backgroundColor: 'var(--bg-dark)', padding: '1rem', borderRadius: 'var(--border-radius)' }}>
+                                        <h4 style={{ margin: '0 0 0.5rem 0', color: 'var(--accent-primary)' }}>{theory.name}</h4>
+                                        <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem', color: 'var(--text-muted)' }}>Suspect: <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{theory.suspectName}</span></p>
+                                        <p style={{ margin: '0 0 1rem 0', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{theory.description}</p>
+                                        <div>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                                                <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Plausibility</span>
+                                                <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>{plausibility}%</span>
+                                            </div>
+                                            <div style={{ width: '100%', height: '8px', backgroundColor: 'var(--bg-panel)', borderRadius: '4px', overflow: 'hidden' }}>
+                                                <div style={{ width: `${plausibility}%`, height: '100%', backgroundColor: plausibility > 50 ? 'var(--accent-success)' : 'var(--accent-danger)', transition: 'width 0.3s' }} />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            );
-                        })}
+                                );
+                            })
+                        )}
                     </div>
                 </div>
             </div>

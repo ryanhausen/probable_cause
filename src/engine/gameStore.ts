@@ -104,5 +104,34 @@ export const calculatePlausibility = (story: Story, theoryId: string, collectedC
         }
     });
 
-    return Math.max(0, Math.min(100, plausibility)); // clamp between 0 and 100
+    const maxPlausibility = theory.maxPlausibility !== undefined ? theory.maxPlausibility : 100;
+    return Math.max(0, Math.min(maxPlausibility, plausibility));
 };
+
+// Helper to check if a theory has been discovered following the narrative
+export const isTheoryDiscovered = (story: Story, theoryId: string, collectedClues: string[]): boolean => {
+    const theory = story.theories[theoryId];
+    if (!theory) return false;
+
+    // Check multiple unlock clues if defined
+    if (theory.unlockedByClueIds && theory.unlockedByClueIds.length > 0) {
+        return theory.unlockedByClueIds.some(clueId => collectedClues.includes(clueId));
+    }
+
+    // Check single unlock clue if defined
+    const unlockClueId = theory.unlockedByClueId || theory.requiredClueId;
+    if (unlockClueId) {
+        return collectedClues.includes(unlockClueId);
+    }
+
+    // If no unlock clue specified, theory is known by default (backward compatible)
+    return true;
+};
+
+// Helper to get all currently discovered theories
+export const getDiscoveredTheories = (story: Story, collectedClues: string[]) => {
+    return Object.values(story.theories).filter(theory =>
+        isTheoryDiscovered(story, theory.id, collectedClues)
+    );
+};
+

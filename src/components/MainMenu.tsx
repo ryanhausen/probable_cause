@@ -50,12 +50,12 @@ export const MainMenu: React.FC = () => {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                height: '100vh',
+                minHeight: '100vh',
                 width: '100vw',
                 backgroundImage: 'linear-gradient(to bottom, var(--bg-dark), #000)',
                 padding: '2rem',
                 position: 'relative',
-                overflow: 'hidden'
+                overflowY: 'auto'
             }}>
                 <div className="crt-overlay" />
                 
@@ -105,10 +105,10 @@ export const MainMenu: React.FC = () => {
 
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                    gap: '2rem',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                    gap: '1.5rem',
                     width: '100%',
-                    maxWidth: '800px',
+                    maxWidth: '1100px',
                     justifyContent: 'center',
                     zIndex: 10
                 }}>
@@ -117,16 +117,17 @@ export const MainMenu: React.FC = () => {
                         className="terminal-panel"
                         onClick={() => !isLoading && handleStartStory('/stories/defaultStory.json')}
                         style={{
-                            padding: '2rem',
+                            padding: '1.5rem',
                             cursor: isLoading ? 'wait' : 'pointer',
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'space-between',
-                            height: '280px',
+                            minHeight: '310px',
                             transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                             border: '1px solid var(--border-color)',
                             backgroundColor: 'rgba(26, 29, 36, 0.60)',
-                            position: 'relative'
+                            position: 'relative',
+                            boxSizing: 'border-box'
                         }}
                         onMouseEnter={(e) => {
                             e.currentTarget.style.borderColor = 'var(--accent-primary)';
@@ -140,7 +141,7 @@ export const MainMenu: React.FC = () => {
                         }}
                     >
                         <div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
                                 <span className="font-terminal" style={{ fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                                     <FolderOpen size={12} /> CASE-01
                                 </span>
@@ -148,14 +149,14 @@ export const MainMenu: React.FC = () => {
                                     AVAILABLE
                                 </span>
                             </div>
-                            <h3 style={{ fontSize: '1.6rem', color: 'var(--text-primary)', fontFamily: 'var(--font-serif)', marginBottom: '0.75rem' }}>
+                            <h3 style={{ fontSize: '1.5rem', color: 'var(--text-primary)', fontFamily: 'var(--font-serif)', marginBottom: '0.5rem' }}>
                                 A Curated Conspiracy
                             </h3>
-                            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+                            <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
                                 A priceless museum artifact has gone missing. The curator Higgins stands nervous. Can you uncover the truth or will the culprit escape justice?
                             </p>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem', borderTop: '1px solid rgba(55, 65, 81, 0.3)', paddingTop: '1rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.25rem', borderTop: '1px solid rgba(55, 65, 81, 0.3)', paddingTop: '0.85rem' }}>
                             <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
                                 DIFFICULTY: <span style={{ color: 'var(--accent-success)' }}>EASY</span>
                             </span>
@@ -165,61 +166,22 @@ export const MainMenu: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Locked Teaser Story Card */}
+                    {/* Maple Hollow Story Card */}
                     <div 
                         className="terminal-panel"
+                        onClick={() => !isLoading && handleStartStory('/stories/mapleHollow.json')}
                         style={{
-                            padding: '2rem',
+                            padding: '1.5rem',
+                            cursor: isLoading ? 'wait' : 'pointer',
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'space-between',
-                            height: '280px',
-                            border: '1px solid rgba(55, 65, 81, 0.2)',
-                            backgroundColor: 'rgba(15, 17, 21, 0.40)',
-                            opacity: 0.5,
-                            cursor: 'not-allowed',
-                            position: 'relative'
-                        }}
-                    >
-                        <div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                                <span className="font-terminal-muted" style={{ fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                                    <Lock size={12} /> CASE-02
-                                </span>
-                                <span style={{ fontSize: '0.75rem', color: 'var(--accent-danger)', border: '1px solid var(--accent-danger)', padding: '2px 6px', borderRadius: '4px', fontFamily: 'var(--font-mono)' }}>
-                                    CLASSIFIED
-                                </span>
-                            </div>
-                            <h3 style={{ fontSize: '1.6rem', color: 'var(--text-muted)', fontFamily: 'var(--font-serif)', marginBottom: '0.75rem' }}>
-                                The Double Agent
-                            </h3>
-                            <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
-                                High-profile espionage at the city's intelligence hub. A rogue operative has breached containment. Track down the leaks before they cross the border.
-                            </p>
-                        </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem', borderTop: '1px solid rgba(55, 65, 81, 0.1)', paddingTop: '1rem' }}>
-                            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                                DIFFICULTY: <span style={{ color: 'var(--accent-danger)' }}>HARD</span>
-                            </span>
-                            <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                                LOCKED <Lock size={10} />
-                            </span>
-                        </div>
-                    </div>
-
-                    {/* Load Custom Story Card */}
-                    <div 
-                        className="terminal-panel"
-                        style={{
-                            padding: '2rem',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'space-between',
-                            height: '280px',
+                            minHeight: '310px',
                             transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                            border: '1px dashed var(--border-color)',
-                            backgroundColor: 'rgba(26, 29, 36, 0.40)',
-                            position: 'relative'
+                            border: '1px solid var(--border-color)',
+                            backgroundColor: 'rgba(26, 29, 36, 0.60)',
+                            position: 'relative',
+                            boxSizing: 'border-box'
                         }}
                         onMouseEnter={(e) => {
                             e.currentTarget.style.borderColor = 'var(--accent-primary)';
@@ -233,7 +195,59 @@ export const MainMenu: React.FC = () => {
                         }}
                     >
                         <div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                                <span className="font-terminal" style={{ fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                    <FolderOpen size={12} /> CASE-02
+                                </span>
+                                <span className="font-terminal-green" style={{ fontSize: '0.75rem', border: '1px solid var(--accent-success)', padding: '2px 6px', borderRadius: '4px' }}>
+                                    AVAILABLE
+                                </span>
+                            </div>
+                            <h3 style={{ fontSize: '1.5rem', color: 'var(--text-primary)', fontFamily: 'var(--font-serif)', marginBottom: '0.5rem' }}>
+                                The Sinking of Maple Hollow
+                            </h3>
+                            <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+                                The longtime mayor vanishes the night before unearthing the 50-year time capsule. Officer Thomas Williams calls on you for help, but something isn't right in Maple Hollow.
+                            </p>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.25rem', borderTop: '1px solid rgba(55, 65, 81, 0.3)', paddingTop: '0.85rem' }}>
+                            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                                DIFFICULTY: <span style={{ color: 'var(--accent-warning, #f59e0b)' }}>MEDIUM</span>
+                            </span>
+                            <span className="font-terminal" style={{ fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                {isLoading ? 'INITIALIZING...' : 'INITIALIZE'} <Play size={10} style={{ fill: 'currentColor' }} />
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* Load Custom Story Card */}
+                    <div 
+                        className="terminal-panel"
+                        style={{
+                            padding: '1.5rem',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between',
+                            minHeight: '310px',
+                            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                            border: '1px dashed var(--border-color)',
+                            backgroundColor: 'rgba(26, 29, 36, 0.40)',
+                            position: 'relative',
+                            boxSizing: 'border-box'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.borderColor = 'var(--accent-primary)';
+                            e.currentTarget.style.transform = 'translateY(-4px)';
+                            e.currentTarget.style.boxShadow = '0 12px 40px rgba(245, 158, 11, 0.15), inset 0 0 20px rgba(245, 158, 11, 0.1)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.borderColor = 'var(--border-color)';
+                            e.currentTarget.style.transform = 'translateY(0)';
+                            e.currentTarget.style.boxShadow = 'none';
+                        }}
+                    >
+                        <div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
                                 <span className="font-terminal" style={{ fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                                     <FolderOpen size={12} /> CUSTOM-CASE
                                 </span>
@@ -241,14 +255,14 @@ export const MainMenu: React.FC = () => {
                                     READY
                                 </span>
                             </div>
-                            <h3 style={{ fontSize: '1.6rem', color: 'var(--text-primary)', fontFamily: 'var(--font-serif)', marginBottom: '0.75rem' }}>
+                            <h3 style={{ fontSize: '1.5rem', color: 'var(--text-primary)', fontFamily: 'var(--font-serif)', marginBottom: '0.5rem' }}>
                                 Load Custom Case
                             </h3>
-                            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+                            <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
                                 Have an unlisted case file? Upload your custom .json story here to begin your independent investigation.
                             </p>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem', borderTop: '1px solid rgba(55, 65, 81, 0.3)', paddingTop: '1rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.25rem', borderTop: '1px solid rgba(55, 65, 81, 0.3)', paddingTop: '0.85rem' }}>
                             <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
                                 FORMAT: <span style={{ color: 'var(--accent-primary)' }}>.JSON</span>
                             </span>

@@ -63,6 +63,10 @@ export interface Theory {
     description: string;
     suspectName: string;
     basePlausibility: number; // usually 0
+    maxPlausibility?: number; // optional upper bound cap on plausibility (defaults to 100)
+    unlockedByClueId?: string; // clue required to discover/unlock this theory
+    unlockedByClueIds?: string[]; // any of these clues will unlock this theory
+    requiredClueId?: string; // alias for compatibility
 }
 
 export interface Story {

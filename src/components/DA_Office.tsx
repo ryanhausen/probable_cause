@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useGameStore, calculatePlausibility } from '../engine/gameStore';
+import { useGameStore, calculatePlausibility, getDiscoveredTheories } from '../engine/gameStore';
 import { evaluateCase } from '../engine/mathEngine';
 
 export const DA_Office: React.FC = () => {
@@ -8,6 +8,8 @@ export const DA_Office: React.FC = () => {
     const [result, setResult] = useState<{ success: boolean; message: string } | null>(null);
 
     if (!currentStory) return null;
+
+    const discoveredTheories = getDiscoveredTheories(currentStory, collectedClues);
 
     const handleSubmitCase = () => {
         if (!selectedTheoryId) return;
@@ -52,35 +54,41 @@ export const DA_Office: React.FC = () => {
             ) : (
                 <div style={{ backgroundColor: 'var(--bg-panel)', padding: '2rem', borderRadius: 'var(--border-radius-lg)', width: '100%', maxWidth: '600px' }}>
                     <h3 style={{ marginBottom: '1rem' }}>Select a Theory to Prosecute</h3>
-                    <select
-                        value={selectedTheoryId}
-                        onChange={(e) => setSelectedTheoryId(e.target.value)}
-                        style={{
-                            width: '100%',
-                            padding: '1rem',
-                            backgroundColor: 'var(--bg-dark)',
-                            color: selectColor,
-                            border: '1px solid var(--border-color)',
-                            borderRadius: 'var(--border-radius)',
-                            marginBottom: '2rem',
-                            fontSize: '1rem',
-                            outline: 'none'
-                        }}
-                    >
-                        <option value="" disabled style={{ color: 'var(--text-primary)' }}>Select a theory...</option>
-                        {Object.values(currentStory.theories).map(theory => {
-                            const plausibility = calculatePlausibility(currentStory, theory.id, collectedClues);
-                            return (
-                                <option 
-                                    key={theory.id} 
-                                    value={theory.id}
-                                    style={{ color: plausibility > 50 ? 'var(--accent-success)' : 'var(--accent-danger)' }}
-                                >
-                                    {theory.name} ({plausibility}%) - Suspect: {theory.suspectName}
-                                </option>
-                            );
-                        })}
-                    </select>
+                    {discoveredTheories.length === 0 ? (
+                        <p style={{ color: 'var(--text-muted)', fontStyle: 'italic', marginBottom: '2rem' }}>
+                            No theories have been formulated yet. You must discover leads and identify suspects before the DA can prosecute.
+                        </p>
+                    ) : (
+                        <select
+                            value={selectedTheoryId}
+                            onChange={(e) => setSelectedTheoryId(e.target.value)}
+                            style={{
+                                width: '100%',
+                                padding: '1rem',
+                                backgroundColor: 'var(--bg-dark)',
+                                color: selectColor,
+                                border: '1px solid var(--border-color)',
+                                borderRadius: 'var(--border-radius)',
+                                marginBottom: '2rem',
+                                fontSize: '1rem',
+                                outline: 'none'
+                            }}
+                        >
+                            <option value="" disabled style={{ color: 'var(--text-primary)' }}>Select a theory...</option>
+                            {discoveredTheories.map(theory => {
+                                const plausibility = calculatePlausibility(currentStory, theory.id, collectedClues);
+                                return (
+                                    <option 
+                                        key={theory.id} 
+                                        value={theory.id}
+                                        style={{ color: plausibility > 50 ? 'var(--accent-success)' : 'var(--accent-danger)' }}
+                                    >
+                                        {theory.name} ({plausibility}%) - Suspect: {theory.suspectName}
+                                    </option>
+                                );
+                            })}
+                        </select>
+                    )}
 
                     <button
                         onClick={handleSubmitCase}

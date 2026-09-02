@@ -1,0 +1,769 @@
+{
+  "id": "story-maple-hollow",
+  "title": "The Sinking of Maple Hollow",
+  "description": "In the quiet, rustic town of Maple Hollow, longtime Mayor Arthur Vance has vanished the night before the unearthing of the 50-year time capsule. You were summoned by your childhood church friend, Officer Thomas Williams, to investigate. But under the tranquil autumn leaves, dark secrets run deep.",
+  "startingSceneId": "town-green",
+  "scenes": {
+    "town-green": {
+      "id": "town-green",
+      "name": "Maple Hollow Town Green",
+      "description": "The rustic heart of Maple Hollow, blanketed in crisp amber maple leaves. In the center lawn, floodlights illuminate a freshly excavated pit surrounded by yellow police tape where the township's 1974 Centennial Time Capsule was unearthed.",
+      "connectedScenes": [
+        "town-hall",
+        "police-station",
+        "maple-lake"
+      ],
+      "charactersPresent": [
+        "char-officer-williams"
+      ],
+      "interactables": [
+        {
+          "id": "int-excavation-pit",
+          "name": "Disturbed Time Capsule Pit",
+          "description": "A deep trench in the clay soil. The heavy 1974 cylindrical brass capsule lies exposed and pried wide open. Deep serrated shear marks on the hasp show the hardened padlock was severed using heavy hydraulic cutters, not unlocked with the ceremonial key.",
+          "x": 50,
+          "y": 55,
+          "grantsClueId": "clue-time-capsule-forced"
+        },
+        {
+          "id": "int-ceremonial-plaque",
+          "name": "1974 Dedication Plaque",
+          "description": "A tarnished bronze marker commemorating the sealing of the capsule on October 14, 1974. Of the seven township committee signatories, memorial cross marks and obituaries confirm Mayor Arthur Vance was the sole living survivor who knew what was sealed inside.",
+          "x": 30,
+          "y": 40,
+          "grantsClueId": "clue-lone-survivor"
+        },
+        {
+          "id": "int-tire-tracks",
+          "name": "Fresh Vehicle Tread Impressions",
+          "description": "Crisp tire tracks pressed into the soft turf bordering the curb. The distinctive Goodyear Eagle deep-rib tread pattern is identical to the tires mounted on Maple Hollow police interceptors.",
+          "x": 75,
+          "y": 70,
+          "grantsClueId": "clue-patrol-treads"
+        }
+      ]
+    },
+    "town-hall": {
+      "id": "town-hall",
+      "name": "Maple Hollow Town Hall",
+      "description": "A creaking 19th-century brick municipal hall with oak wainscoting and brass fixtures. Campaign flyers from five past municipal elections litter the bulletin boards, and the smell of floor wax lingers in the chilly air.",
+      "connectedScenes": [
+        "town-green",
+        "mayors-office"
+      ],
+      "charactersPresent": [
+        "char-asst-mayor-gable"
+      ],
+      "interactables": [
+        {
+          "id": "int-campaign-posters",
+          "name": "Archived Election Posters",
+          "description": "Campaign posters spanning twenty years: Gable vs. Vance in 2004, 2008, 2012, 2016, and 2020. Gable lost every single race. Scrawled across a private memo in Gable's drawer is: 'Arthur's grip ends now. Five defeats are enough.'",
+          "x": 25,
+          "y": 45,
+          "grantsClueId": "clue-gable-grudge"
+        },
+        {
+          "id": "int-visitor-log",
+          "name": "Town Hall Night Registry",
+          "description": "The front desk sign-in log for the night Vance went missing. Mayor Vance logged out at 9:45 PM. Directly underneath, another visitor entry around 10:00 PM has been violently blackened out with a thick tactical permanent marker.",
+          "x": 65,
+          "y": 60,
+          "grantsClueId": "clue-night-visit"
+        }
+      ]
+    },
+    "mayors-office": {
+      "id": "mayors-office",
+      "name": "Mayor Vance's Private Office",
+      "description": "A spacious study lined with local historical maps, antique law tomes, and grandfather clocks. Cabinet drawers hang open as though searched in haste, though valuable silver pen sets and heirloom pocket watches remain undisturbed.",
+      "connectedScenes": [
+        "town-hall"
+      ],
+      "charactersPresent": [],
+      "interactables": [
+        {
+          "id": "int-insulin-kit",
+          "name": "Refrigerated Insulin Kit & Passport",
+          "description": "Mayor Vance's refrigerated diabetic medication kit and valid passport sitting on the credenza. Vance was severely insulin-dependent; he could not survive past 48 hours without this kit, making voluntary flight virtually impossible.",
+          "x": 40,
+          "y": 30,
+          "grantsClueId": "clue-insulin-left"
+        },
+        {
+          "id": "int-hidden-diary",
+          "name": "Vance's Personal Journal",
+          "description": "A leather journal hidden behind county tax ledgers. The final entry from three days ago reads: 'Young Tommy Williams from the parish stopped by. I made the mistake of mentioning the 1974 capsule's true secret—the 1890 Dutch Hill Gold Cache survey map. Tommy's demeanor changed instantly. He had a look of sheer obsession.'",
+          "x": 70,
+          "y": 65,
+          "grantsClueId": "clue-capsule-secret"
+        },
+        {
+          "id": "int-pawn-slip",
+          "name": "Bank Delinquency Notices",
+          "description": "Several unopened urgent final warnings regarding personal promissory notes and farm mortgages under Arthur Vance's name, indicating he was in severe private debt.",
+          "x": 20,
+          "y": 75,
+          "grantsClueId": "clue-shredded-receipt"
+        }
+      ]
+    },
+    "police-station": {
+      "id": "police-station",
+      "name": "Maple Hollow Police Substation",
+      "description": "A modest wood-paneled precinct building. A radio dispatch desk buzzes with low static, maps of the surrounding county pin down missing person flyers, and an armory cage stands along the back corridor.",
+      "connectedScenes": [
+        "town-green",
+        "boat-dock"
+      ],
+      "charactersPresent": [
+        "char-dispatcher-clara"
+      ],
+      "interactables": [
+        {
+          "id": "int-duty-roster",
+          "name": "Patrol Dispatch Log",
+          "description": "The official station roster shows Officer Williams checked out Patrol Cruiser 2 at 10:15 PM on the night Mayor Vance vanished, citing 'special security detail', and manually disconnected the automated AVL transponder for two hours.",
+          "x": 35,
+          "y": 50,
+          "grantsClueId": "clue-unauthorized-patrol"
+        },
+        {
+          "id": "int-evidence-locker",
+          "name": "Maintenance Pegboard",
+          "description": "The emergency tool pegboard is missing the department's heavy-duty 36-inch hydraulic steel bolt cutters and a 50-foot spool of marine tow-chain.",
+          "x": 80,
+          "y": 40,
+          "grantsClueId": "clue-missing-boltcutters"
+        }
+      ]
+    },
+    "maple-lake": {
+      "id": "maple-lake",
+      "name": "Mirror Lake Scenic Overlook",
+      "description": "A serene, glacial lake bordered by weeping willows and rocky outcroppings. The morning fog hovers over the placid dark water, which plunges to a known abyss of over seventy feet in the central basin.",
+      "connectedScenes": [
+        "town-green",
+        "boat-dock"
+      ],
+      "charactersPresent": [],
+      "interactables": [
+        {
+          "id": "int-lake-oil-slick",
+          "name": "Centennial Center Trench Oil Sheen",
+          "description": "A distinct, shimmering petroleum sheen floating directly above the deepest point of Mirror Lake. The oily film matches the two-stroke marine engine fuel used exclusively by the township's patrol boat.",
+          "x": 50,
+          "y": 30,
+          "grantsClueId": "clue-engine-oil"
+        },
+        {
+          "id": "int-shoreline-drag",
+          "name": "Torn Reeds and Heavy Furrows",
+          "description": "Trampled reeds and a deep dragged-weight furrow leading from the gravel road straight down into the water. Dark droplets on the river pebbles have oxidized to a crusty brown-red.",
+          "x": 30,
+          "y": 80,
+          "grantsClueId": "clue-drag-marks"
+        }
+      ]
+    },
+    "boat-dock": {
+      "id": "boat-dock",
+      "name": "Municipal Boathouse & Pier",
+      "description": "A weather-beaten cedar pier where the municipal maintenance and patrol craft are docked. Outboard motors drip in the shed, and the water laps quietly against the pilings.",
+      "connectedScenes": [
+        "police-station",
+        "maple-lake"
+      ],
+      "charactersPresent": [],
+      "interactables": [
+        {
+          "id": "int-patrol-boat",
+          "name": "Patrol Launch Boat No. 1",
+          "description": "The town's patrol launch sits moored with a still-warm engine cowling. Its bow gunwale bears yellow brass scrape marks matching the exterior paint of the time capsule, and the deck bilge is coated in dark aquatic weeds dredged from the 70-foot lake bed.",
+          "x": 45,
+          "y": 60,
+          "grantsClueId": "clue-patrol-boat"
+        },
+        {
+          "id": "int-trash-can",
+          "name": "Disposal Bin Under Workbench",
+          "description": "Stuffed beneath oily rags in the metal bin is a discarded Kevlar tactical shooting glove stenciled with Officer Williams's badge number 'W-14'. The glove's palm is stained with dried blood and brass shavings.",
+          "x": 80,
+          "y": 75,
+          "grantsClueId": "clue-williams-glove"
+        }
+      ]
+    }
+  },
+  "characters": {
+    "char-officer-williams": {
+      "id": "char-officer-williams",
+      "name": "Officer Thomas Williams",
+      "description": "Your childhood church companion, now Maple Hollow's sole full-time patrolman.",
+      "currentDialogueNodeId": "node-williams-intro",
+      "dialogueNodes": {
+        "node-williams-intro": {
+          "id": "node-williams-intro",
+          "text": "Hey old friend. Good to see you again after all these years—feels like yesterday we were sitting in big group back at Grace Kids Sunday School. I wish I called you under better circumstances. Mayor Vance has vanished into thin air, and tomorrow's supposed to be the 50-year time capsule ceremony. The whole town is panicking.",
+          "options": [
+            {
+              "text": "Good to see you, Tommy. What's your working theory on what happened?",
+              "nextNodeId": "node-williams-theory"
+            },
+            {
+              "text": "Tell me about Mayor Vance. Who might want him gone?",
+              "nextNodeId": "node-williams-suspects"
+            },
+            {
+              "text": "Tommy, Vance left his insulin and passport in his desk. A runaway doesn't leave his life support.",
+              "nextNodeId": "node-williams-confront-insulin",
+              "requiredClueId": "clue-insulin-left"
+            },
+            {
+              "text": "Vance's diary says he told you about an 1890s gold cache map in the capsule three days ago.",
+              "nextNodeId": "node-williams-confront-diary",
+              "requiredClueId": "clue-capsule-secret"
+            },
+            {
+              "text": "We found your bloody tactical glove and capsule brass shavings in the boathouse bin, Thomas.",
+              "nextNodeId": "node-williams-confront-murder",
+              "requiredClueId": "clue-williams-glove"
+            },
+            {
+              "text": "I'm going to canvass the town and examine the scenes first."
+            }
+          ]
+        },
+        "node-williams-theory": {
+          "id": "node-williams-theory",
+          "text": "Between you and me, it's cut and dry. Vance was drowning in private debts. He was the only living soul who knew what was sealed in that 1974 capsule. He must've dug it up in the middle of the night, pocketed the valuable historical assets, and skipped town on the midnight bus.",
+          "options": [
+            {
+              "text": "I'll keep that in mind while I inspect the evidence.",
+              "grantsClueId": "clue-williams-theory",
+              "nextNodeId": "node-williams-intro"
+            }
+          ]
+        },
+        "node-williams-suspects": {
+          "id": "node-williams-suspects",
+          "text": "If you don't buy that Vance skipped town, take a hard look at Assistant Mayor Donald Gable. That man has lost five straight elections to Vance. He's bitter, angry, and has been screaming at town council for months that Vance needed to be removed.",
+          "options": [
+            {
+              "text": "I'll go question Gable at Town Hall.",
+              "nextNodeId": "node-williams-intro",
+              "grantsClueId": "clue-gable-suspect"
+            }
+          ]
+        },
+        "node-williams-confront-insulin": {
+          "id": "node-williams-confront-insulin",
+          "text": "He... well, the old man was getting senile. Probably panicked in the dark, snatched what he could carry, and ran without thinking. People do reckless things when creditors are breathing down their necks.",
+          "options": [
+            {
+              "text": "Maybe. But I'll verify the rest of the timeline.",
+              "nextNodeId": "node-williams-intro"
+            }
+          ]
+        },
+        "node-williams-confront-diary": {
+          "id": "node-williams-confront-diary",
+          "text": "(Williams shifts uncomfortably, avoiding eye contact) Arthur was rambling! You know how old-timers talk—ghost stories, Dutch Hill gold, lost surveyor maps. It's folklore! I barely paid attention to what he was saying.",
+          "options": [
+            {
+              "text": "You seemed to pay enough attention to shut down your cruiser's GPS that very night.",
+              "nextNodeId": "node-williams-intro"
+            }
+          ]
+        },
+        "node-williams-confront-murder": {
+          "id": "node-williams-confront-murder",
+          "text": "(Williams's face drains of all color. His hand twitches near his service weapon before dropping limply) Dammit... you were supposed to come here, look at Gable, sign off on the report, and collect your consultant check. Why couldn't you just let it be? Vance lived seventy-eight years having everything handed to him. That map was my only way out of this dead-end valley! I didn't mean to hit him that hard... but once he stopped breathing, I had to take the boat out and sink him with the anchor chains into the lake abyss!",
+          "options": [
+            {
+              "text": "It's over, Thomas. Hand over your weapon.",
+              "grantsClueId": "clue-williams-confession"
+            }
+          ]
+        }
+      }
+    },
+    "char-asst-mayor-gable": {
+      "id": "char-asst-mayor-gable",
+      "name": "Assistant Mayor Donald Gable",
+      "description": "Perennial runner-up candidate who has lost the last five mayoral elections.",
+      "currentDialogueNodeId": "node-gable-intro",
+      "dialogueNodes": {
+        "node-gable-intro": {
+          "id": "node-gable-intro",
+          "text": "I suppose Officer Williams sent you to point fingers at me? Let me guess: 'Gable's bitter because he lost five elections!' Yes, I wanted the mayor's seat, but I wanted to win it by democratic vote, not by having Arthur vanish!",
+          "options": [
+            {
+              "text": "Where were you on the night Mayor Vance disappeared?",
+              "nextNodeId": "node-gable-alibi"
+            },
+            {
+              "text": "We saw your campaign dossier notes: 'Arthur's grip ends now. Five defeats are enough.'",
+              "nextNodeId": "node-gable-grudge-defense",
+              "requiredClueId": "clue-gable-grudge"
+            },
+            {
+              "text": "Did Arthur ever tell you what was in the 1974 time capsule?",
+              "nextNodeId": "node-gable-capsule"
+            },
+            {
+              "text": "I'll let you get back to your work."
+            }
+          ]
+        },
+        "node-gable-alibi": {
+          "id": "node-gable-alibi",
+          "text": "I was sitting right here in the council chamber on the live tri-county regional infrastructure video stream from 8:00 PM until nearly midnight! Over sixty town officials from four districts were logged on. You can check the county broadcast archive yourself!",
+          "options": [
+            {
+              "text": "That's a solid, verified alibi.",
+              "grantsClueId": "clue-gable-alibi",
+              "nextNodeId": "node-gable-intro"
+            }
+          ]
+        },
+        "node-gable-grudge-defense": {
+          "id": "node-gable-grudge-defense",
+          "text": "Those are speechwriter notes for my 2024 campaign kickoff! Passionate political rhetoric isn't murder. If you want a real suspect, ask Williams why he was prowling around the Town Hall records room after dark with a roll of masking tape and a flashlight.",
+          "options": [
+            {
+              "text": "Williams was seen here late?",
+              "nextNodeId": "node-gable-intro"
+            }
+          ]
+        },
+        "node-gable-capsule": {
+          "id": "node-gable-capsule",
+          "text": "Never. Arthur guarded that secret with his life. The other six founders died decades ago. All Arthur ever teased was that when opened, the capsule would make Maple Hollow famous across the country. Whatever was in there, someone took Arthur to get it.",
+          "options": [
+            {
+              "text": "Thank you, Mr. Gable.",
+              "nextNodeId": "node-gable-intro"
+            }
+          ]
+        }
+      }
+    },
+    "char-dispatcher-clara": {
+      "id": "char-dispatcher-clara",
+      "name": "Clara Finch",
+      "description": "Veteran night dispatcher who has monitored Maple Hollow's emergency bands for thirty years.",
+      "currentDialogueNodeId": "node-clara-intro",
+      "dialogueNodes": {
+        "node-clara-intro": {
+          "id": "node-clara-intro",
+          "text": "Evening, investigator. If you're looking for Officer Williams, he's been jumpy as a cat on a tin roof all day. Can I pull up any logs for you?",
+          "options": [
+            {
+              "text": "Did Officer Williams call in any unusual activity on the night of the disappearance?",
+              "nextNodeId": "node-clara-radio-log"
+            },
+            {
+              "text": "Someone blacked out a name on the Town Hall registry with police tactical ink.",
+              "nextNodeId": "node-clara-marker",
+              "requiredClueId": "clue-night-visit"
+            },
+            {
+              "text": "I'm just checking in, Clara. Thank you."
+            }
+          ]
+        },
+        "node-clara-radio-log": {
+          "id": "node-clara-radio-log",
+          "text": "Come to think of it, yes. Tommy called over the secondary band around 11:00 PM saying he had to take the patrol launch out onto Mirror Lake to chase off noisy teenagers. But we didn't receive a single noise complaint from any lakeside cottages all night. And when he came back at 1:00 AM, he looked drenched and ghost-white.",
+          "options": [
+            {
+              "text": "He took the patrol launch out into the lake at midnight with no 911 calls?",
+              "grantsClueId": "clue-clara-testimony",
+              "nextNodeId": "node-clara-intro"
+            }
+          ]
+        },
+        "node-clara-marker": {
+          "id": "node-clara-marker",
+          "text": "That's Tommy's tactical marker. Only two of those pens were issued to the department, and Tommy carries both in his vest pocket. Why on earth would he black out a visitor entry?",
+          "options": [
+            {
+              "text": "To hide that he was the last person to see Arthur Vance alive.",
+              "nextNodeId": "node-clara-intro"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "clues": {
+    "clue-time-capsule-forced": {
+      "id": "clue-time-capsule-forced",
+      "name": "Pried Capsule Hasp & Shear Marks",
+      "description": "The capsule's hardened padlock was violently sheared with industrial hydraulic cutters rather than unlocked with the mayor's ceremonial key.",
+      "plausibilityModifiers": [
+        {
+          "theoryId": "theory-officer-williams",
+          "amount": 15
+        },
+        {
+          "theoryId": "theory-asst-mayor",
+          "amount": 10
+        },
+        {
+          "theoryId": "theory-mayor-fled",
+          "amount": -20
+        }
+      ]
+    },
+    "clue-lone-survivor": {
+      "id": "clue-lone-survivor",
+      "name": "1974 Dedication Plaque",
+      "description": "Mayor Arthur Vance was the sole surviving member of the 1974 committee and the only living person with knowledge of the capsule's contents.",
+      "plausibilityModifiers": [
+        {
+          "theoryId": "theory-officer-williams",
+          "amount": 10
+        },
+        {
+          "theoryId": "theory-asst-mayor",
+          "amount": 10
+        },
+        {
+          "theoryId": "theory-mayor-fled",
+          "amount": 10
+        }
+      ]
+    },
+    "clue-patrol-treads": {
+      "id": "clue-patrol-treads",
+      "name": "Police Cruiser Tire Tracks",
+      "description": "Fresh tire impressions matching standard-issue Goodyear Eagle police tires found pressed into the clay beside the excavated pit.",
+      "plausibilityModifiers": [
+        {
+          "theoryId": "theory-officer-williams",
+          "amount": 20
+        },
+        {
+          "theoryId": "theory-asst-mayor",
+          "amount": -10
+        },
+        {
+          "theoryId": "theory-mayor-fled",
+          "amount": -15
+        }
+      ]
+    },
+    "clue-gable-grudge": {
+      "id": "clue-gable-grudge",
+      "name": "Gable's Five-Election Grudge",
+      "description": "Documentation of Donald Gable losing five straight elections to Vance, alongside aggressive campaign notes.",
+      "plausibilityModifiers": [
+        {
+          "theoryId": "theory-asst-mayor",
+          "amount": 30
+        },
+        {
+          "theoryId": "theory-officer-williams",
+          "amount": -5
+        }
+      ]
+    },
+    "clue-night-visit": {
+      "id": "clue-night-visit",
+      "name": "Redacted Visitor Log Entry",
+      "description": "A sign-in entry immediately following Vance's late-night departure blackened out with department-issued tactical marker ink.",
+      "plausibilityModifiers": [
+        {
+          "theoryId": "theory-officer-williams",
+          "amount": 20
+        },
+        {
+          "theoryId": "theory-asst-mayor",
+          "amount": 10
+        }
+      ]
+    },
+    "clue-insulin-left": {
+      "id": "clue-insulin-left",
+      "name": "Abandoned Vital Insulin & Passport",
+      "description": "Mayor Vance left his essential diabetic medication and passport behind. He could not survive more than 48 hours without insulin.",
+      "plausibilityModifiers": [
+        {
+          "theoryId": "theory-mayor-fled",
+          "amount": -50
+        },
+        {
+          "theoryId": "theory-officer-williams",
+          "amount": 15
+        },
+        {
+          "theoryId": "theory-asst-mayor",
+          "amount": 15
+        }
+      ]
+    },
+    "clue-capsule-secret": {
+      "id": "clue-capsule-secret",
+      "name": "Mayor's Journal: 1890 Gold Cache Map",
+      "description": "Vance's private diary confirms the capsule contained a historic survey map to the Dutch Hill gold shipment, and notes Officer Williams's fixation on it.",
+      "plausibilityModifiers": [
+        {
+          "theoryId": "theory-officer-williams",
+          "amount": 30
+        },
+        {
+          "theoryId": "theory-mayor-fled",
+          "amount": -25
+        },
+        {
+          "theoryId": "theory-asst-mayor",
+          "amount": -15
+        }
+      ]
+    },
+    "clue-shredded-receipt": {
+      "id": "clue-shredded-receipt",
+      "name": "Mayor's Debt Notices",
+      "description": "Letters of financial delinquency addressed to Arthur Vance, providing a superficial motive for running away.",
+      "plausibilityModifiers": [
+        {
+          "theoryId": "theory-mayor-fled",
+          "amount": 25
+        },
+        {
+          "theoryId": "theory-officer-williams",
+          "amount": -5
+        }
+      ]
+    },
+    "clue-unauthorized-patrol": {
+      "id": "clue-unauthorized-patrol",
+      "name": "Off-Grid Patrol Log",
+      "description": "Officer Williams checked out Cruiser 2 and disabled the vehicle's GPS transponder for two hours during the exact window Vance disappeared.",
+      "plausibilityModifiers": [
+        {
+          "theoryId": "theory-officer-williams",
+          "amount": 25
+        },
+        {
+          "theoryId": "theory-asst-mayor",
+          "amount": -15
+        },
+        {
+          "theoryId": "theory-mayor-fled",
+          "amount": -10
+        }
+      ]
+    },
+    "clue-missing-boltcutters": {
+      "id": "clue-missing-boltcutters",
+      "name": "Missing Police Bolt Cutters & Tow Chain",
+      "description": "The police substation pegboard is missing heavy hydraulic bolt cutters and heavy anchor chain.",
+      "plausibilityModifiers": [
+        {
+          "theoryId": "theory-officer-williams",
+          "amount": 20
+        },
+        {
+          "theoryId": "theory-asst-mayor",
+          "amount": -10
+        },
+        {
+          "theoryId": "theory-mayor-fled",
+          "amount": -15
+        }
+      ]
+    },
+    "clue-engine-oil": {
+      "id": "clue-engine-oil",
+      "name": "Two-Stroke Oil Sheen on Lake Basin",
+      "description": "A petroleum slick floating directly over the deepest 70-foot trench of Mirror Lake, matching fuel used by the police launch.",
+      "plausibilityModifiers": [
+        {
+          "theoryId": "theory-officer-williams",
+          "amount": 25
+        },
+        {
+          "theoryId": "theory-asst-mayor",
+          "amount": -10
+        }
+      ]
+    },
+    "clue-drag-marks": {
+      "id": "clue-drag-marks",
+      "name": "Shoreline Drag Marks & Blood Droplets",
+      "description": "Crushed bank weeds and heavy drag furrows leading into the water at Mirror Lake, spotted with dried blood.",
+      "plausibilityModifiers": [
+        {
+          "theoryId": "theory-officer-williams",
+          "amount": 20
+        },
+        {
+          "theoryId": "theory-asst-mayor",
+          "amount": 15
+        },
+        {
+          "theoryId": "theory-mayor-fled",
+          "amount": -40
+        }
+      ]
+    },
+    "clue-patrol-boat": {
+      "id": "clue-patrol-boat",
+      "name": "Gouged Patrol Boat & Deep-Trench Silt",
+      "description": "The municipal patrol boat has yellow paint transfer from the time capsule on its gunwale and deep-lake sediment in its bilge.",
+      "plausibilityModifiers": [
+        {
+          "theoryId": "theory-officer-williams",
+          "amount": 30
+        },
+        {
+          "theoryId": "theory-asst-mayor",
+          "amount": -20
+        },
+        {
+          "theoryId": "theory-mayor-fled",
+          "amount": -25
+        }
+      ]
+    },
+    "clue-williams-glove": {
+      "id": "clue-williams-glove",
+      "name": "Williams's Bloodstained Tactical Glove",
+      "description": "A discarded Kevlar glove found in the boathouse bin stenciled with badge number 'W-14', coated in blood and brass shavings.",
+      "plausibilityModifiers": [
+        {
+          "theoryId": "theory-officer-williams",
+          "amount": 35
+        },
+        {
+          "theoryId": "theory-asst-mayor",
+          "amount": -30
+        },
+        {
+          "theoryId": "theory-mayor-fled",
+          "amount": -40
+        }
+      ]
+    },
+    "clue-williams-theory": {
+      "id": "clue-williams-theory",
+      "name": "Officer Williams's Embezzlement Theory",
+      "description": "Williams's initial claim that Mayor Vance looted the capsule to escape his mounting financial debts.",
+      "plausibilityModifiers": [
+        {
+          "theoryId": "theory-mayor-fled",
+          "amount": 15
+        },
+        {
+          "theoryId": "theory-officer-williams",
+          "amount": -10
+        }
+      ]
+    },
+    "clue-gable-alibi": {
+      "id": "clue-gable-alibi",
+      "name": "Gable's Public Stream Alibi",
+      "description": "Official video archives confirm Assistant Mayor Gable was participating in a televised public regional hearing until midnight.",
+      "plausibilityModifiers": [
+        {
+          "theoryId": "theory-asst-mayor",
+          "amount": -40
+        },
+        {
+          "theoryId": "theory-officer-williams",
+          "amount": 15
+        }
+      ]
+    },
+    "clue-clara-testimony": {
+      "id": "clue-clara-testimony",
+      "name": "Dispatcher's Midnight Launch Log",
+      "description": "Clara Finch testified that Officer Williams took the patrol boat onto Mirror Lake in the middle of the night without any 911 calls.",
+      "plausibilityModifiers": [
+        {
+          "theoryId": "theory-officer-williams",
+          "amount": 25
+        },
+        {
+          "theoryId": "theory-asst-mayor",
+          "amount": -15
+        },
+        {
+          "theoryId": "theory-mayor-fled",
+          "amount": -15
+        }
+      ]
+    },
+    "clue-williams-confession": {
+      "id": "clue-williams-confession",
+      "name": "Officer Williams's Murder Confession",
+      "description": "Williams admitted under interrogation to killing Mayor Vance for the 1890 gold map and sinking his body in the lake.",
+      "plausibilityModifiers": [
+        {
+          "theoryId": "theory-officer-williams",
+          "amount": 45
+        },
+        {
+          "theoryId": "theory-asst-mayor",
+          "amount": -40
+        },
+        {
+          "theoryId": "theory-mayor-fled",
+          "amount": -50
+        }
+      ]
+    },
+    "clue-gable-suspect": {
+      "id": "clue-gable-suspect",
+      "name": "Williams Points to Gable",
+      "description": "Officer Williams named Assistant Mayor Donald Gable as a prime suspect, pointing to Gable's five consecutive bitter election losses to Vance.",
+      "plausibilityModifiers": [
+        {
+          "theoryId": "theory-asst-mayor",
+          "amount": 20
+        }
+      ]
+    }
+  },
+  "theories": {
+    "theory-mayor-fled": {
+      "id": "theory-mayor-fled",
+      "name": "The Mayor Absconded",
+      "description": "Mayor Arthur Vance fled Maple Hollow under cover of darkness with the valuable contents of the 1974 time capsule to evade his mounting private debts.",
+      "suspectName": "Mayor Arthur Vance",
+      "basePlausibility": 15,
+      "unlockedByClueIds": [
+        "clue-williams-theory",
+        "clue-shredded-receipt"
+      ]
+    },
+    "theory-asst-mayor": {
+      "id": "theory-asst-mayor",
+      "name": "The Bitter Rival",
+      "description": "Assistant Mayor Donald Gable, humiliated after losing five consecutive mayoral elections to Vance, orchestrated Vance's abduction to finally usurp the office.",
+      "suspectName": "Assistant Mayor Donald Gable",
+      "basePlausibility": 15,
+      "unlockedByClueIds": [
+        "clue-gable-suspect",
+        "clue-gable-grudge"
+      ]
+    },
+    "theory-officer-williams": {
+      "id": "theory-officer-williams",
+      "name": "Betrayal in Uniform",
+      "description": "Officer Thomas Williams murdered Mayor Vance after discovering the 1974 time capsule held an 1890s gold cache survey map, weighting Vance's body with police chains and sinking him in the deep basin of Mirror Lake.",
+      "suspectName": "Officer Thomas Williams",
+      "basePlausibility": 5,
+      "maxPlausibility": 95,
+      "unlockedByClueIds": [
+        "clue-capsule-secret",
+        "clue-unauthorized-patrol",
+        "clue-clara-testimony",
+        "clue-williams-glove"
+      ]
+    }
+  }
+}
