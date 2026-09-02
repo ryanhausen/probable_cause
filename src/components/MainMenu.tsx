@@ -25,6 +25,24 @@ export const MainMenu: React.FC = () => {
         }
     };
 
+    const handleLoadCustomStory = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const content = e.target?.result as string;
+                const parsedStory = JSON.parse(content) as Story;
+                loadStory(parsedStory);
+            } catch (err) {
+                console.error("Failed to parse story json", err);
+                alert("Invalid Story JSON file.\nError: " + (err as Error).message);
+            }
+        };
+        reader.readAsText(file);
+    };
+
     if (menuView === 'levels') {
         return (
             <div className="main-menu-container animate-fade-in" style={{
@@ -186,6 +204,67 @@ export const MainMenu: React.FC = () => {
                             <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                                 LOCKED <Lock size={10} />
                             </span>
+                        </div>
+                    </div>
+
+                    {/* Load Custom Story Card */}
+                    <div 
+                        className="terminal-panel"
+                        style={{
+                            padding: '2rem',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between',
+                            height: '280px',
+                            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                            border: '1px dashed var(--border-color)',
+                            backgroundColor: 'rgba(26, 29, 36, 0.40)',
+                            position: 'relative'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.borderColor = 'var(--accent-primary)';
+                            e.currentTarget.style.transform = 'translateY(-4px)';
+                            e.currentTarget.style.boxShadow = '0 12px 40px rgba(245, 158, 11, 0.15), inset 0 0 20px rgba(245, 158, 11, 0.1)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.borderColor = 'var(--border-color)';
+                            e.currentTarget.style.transform = 'translateY(0)';
+                            e.currentTarget.style.boxShadow = 'none';
+                        }}
+                    >
+                        <div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                                <span className="font-terminal" style={{ fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                    <FolderOpen size={12} /> CUSTOM-CASE
+                                </span>
+                                <span className="font-terminal-green" style={{ fontSize: '0.75rem', border: '1px solid var(--accent-success)', padding: '2px 6px', borderRadius: '4px' }}>
+                                    READY
+                                </span>
+                            </div>
+                            <h3 style={{ fontSize: '1.6rem', color: 'var(--text-primary)', fontFamily: 'var(--font-serif)', marginBottom: '0.75rem' }}>
+                                Load Custom Case
+                            </h3>
+                            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+                                Have an unlisted case file? Upload your custom .json story here to begin your independent investigation.
+                            </p>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem', borderTop: '1px solid rgba(55, 65, 81, 0.3)', paddingTop: '1rem' }}>
+                            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                                FORMAT: <span style={{ color: 'var(--accent-primary)' }}>.JSON</span>
+                            </span>
+                            <label style={{ 
+                                cursor: 'pointer',
+                                fontSize: '0.9rem',
+                                color: 'var(--accent-primary)',
+                                fontFamily: 'var(--font-mono)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.25rem',
+                                textDecoration: 'underline'
+                            }}>
+                                BROWSE FILES <FolderOpen size={10} />
+                                <input type="file" accept=".json" style={{ display: 'none' }} onChange={handleLoadCustomStory} />
+                            </label>
                         </div>
                     </div>
                 </div>
