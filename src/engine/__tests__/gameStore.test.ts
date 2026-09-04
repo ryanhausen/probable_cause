@@ -1,6 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import { calculatePlausibility, isTheoryDiscovered, getDiscoveredTheories } from '../gameStore';
 import defaultStory from '../../../public/stories/defaultStory.json';
+import _mapleHollow from '../../../public/stories/mapleHollow.json';
+// Cast to any to allow dynamic string indexing in tests (replicates prior require() behavior)
+const mapleHollow: any = _mapleHollow;
 
 describe('gameStore calculations', () => {
     it('calculates base plausibility with no clues', () => {
@@ -43,8 +46,6 @@ describe('gameStore calculations', () => {
 });
 
 describe('Maple Hollow Story Integrity & Calculations', () => {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const mapleHollow = require('../../../public/stories/mapleHollow.json');
 
     it('has valid structure and scene graph references', () => {
         expect(mapleHollow.scenes[mapleHollow.startingSceneId]).toBeDefined();

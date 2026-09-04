@@ -15,7 +15,7 @@ import type {
     Connection
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import type { Story, Scene } from '../../engine/types';
+import type { Story, Scene, Character } from '../../engine/types';
 import { SceneEditor } from './SceneEditor';
 import { ConversationEditor } from './ConversationEditor';
 

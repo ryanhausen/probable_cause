@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGameStore } from '../engine/gameStore';
+import { useGameStore, isTheoryDiscovered } from '../engine/gameStore';
 import { X, MessageSquare } from 'lucide-react';
 
 interface DialogueSystemProps {

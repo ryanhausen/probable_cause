@@ -11,7 +11,7 @@ interface SceneEditorProps {
 }
 
 export const SceneEditor: React.FC<SceneEditorProps> = (props) => {
-    const { story, scene, onSave, onClose, onUpdateStory } = props;
+    const { story, scene, onSave, onClose } = props;
     const [name, setName] = useState(scene.name);
     const [description, setDescription] = useState(scene.description);
     const [interactables, setInteractables] = useState<Interactable[]>(scene.interactables || []);

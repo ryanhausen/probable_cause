@@ -5,7 +5,6 @@ import {
     Background,
     applyNodeChanges,
     applyEdgeChanges,
-    addEdge
 } from '@xyflow/react';
 import type {
     Node,
@@ -15,7 +14,7 @@ import type {
     Connection
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import type { Character, DialogueNode, DialogueOption, Story, Clue, Theory } from '../../engine/types';
+import type { Character, DialogueNode, DialogueOption, Story, Theory } from '../../engine/types';
 
 interface OptionEditorProps {
     opt: DialogueOption;
@@ -191,7 +190,7 @@ interface ConversationEditorProps {
     onUpdateStory: (updatedStory: Story) => void;
 }
 
-export const ConversationEditor: React.FC<ConversationEditorProps> = ({ story, character, onSave, onClose, onUpdateStory }) => {
+export const ConversationEditor: React.FC<ConversationEditorProps> = ({ story, character, onClose, onUpdateStory }) => {
     const [nodes, setNodes] = useState<Node[]>([]);
     const [edges, setEdges] = useState<Edge[]>([]);
     const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
@@ -283,11 +282,11 @@ export const ConversationEditor: React.FC<ConversationEditorProps> = ({ story, c
         [character, story, onUpdateStory],
     );
 
-    const onNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
+    const onNodeClick = useCallback((_event: React.MouseEvent, node: Node) => {
         setSelectedNodeId(node.id);
     }, []);
 
-    const onNodeDragStop = useCallback((event: React.MouseEvent, node: Node) => {
+    const onNodeDragStop = useCallback((_event: React.MouseEvent, node: Node) => {
         const dialogueNode = character.dialogueNodes[node.id];
         if (dialogueNode) {
             onUpdateStory({

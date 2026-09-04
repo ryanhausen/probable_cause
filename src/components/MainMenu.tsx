@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useGameStore } from '../engine/gameStore';
-import { Play, Settings, FolderOpen, Lock, ArrowLeft } from 'lucide-react';
+import { Play, Settings, FolderOpen, ArrowLeft } from 'lucide-react';
 import type { Story } from '../engine/types';
 
 export const MainMenu: React.FC = () => {
